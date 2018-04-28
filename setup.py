@@ -8,5 +8,9 @@ setup(
         license='GNU General Public License v3.0',
         author='Matthew de Verteuil',
         author_email='mverteuil@github.com',
-        description='Environment variable management'
+        description='Environment variable management',
+        entry_points = '''
+        [console_scripts]
+        barb=barbara:barbara
+        ''',
 )

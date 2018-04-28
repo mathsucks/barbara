@@ -5,8 +5,12 @@ name = "pypi"
 
 [packages]
 pytest = "*"
+python-dotenv = "*"
+click = "*"
 
 [dev-packages]
+"e1839a8" = {path = ".", editable = true}
+pdbpp = "*"
 
 [requires]
 python_version = "3.6"
