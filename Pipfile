@@ -11,6 +11,8 @@ click = "*"
 [dev-packages]
 "e1839a8" = {path = ".", editable = true}
 pdbpp = "*"
+coverage = "*"
+pytest-cov = "*"
 
 [requires]
 python_version = "3.6"
