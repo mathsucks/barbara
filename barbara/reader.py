@@ -4,6 +4,7 @@ from dotenv import dotenv_values
 
 
 class Reader:
+    """Reads environment variables into an ordered dictionary"""
     def __init__(self, source):
         self.source = source
 
