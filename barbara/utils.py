@@ -1,5 +1,6 @@
 import os
 import sys
+from collections.__init__ import OrderedDict
 
 import click
 from dotenv import find_dotenv
@@ -21,8 +22,8 @@ def confirm_target_file(target_file: str = None) -> bool:
     if os.path.exists(target_file):
         return click.prompt('Destination file', default=target_file)
     elif click.confirm(f'{target_file} does not exist. Create it', prompt_suffix='? '):
-        open(target_file, 'w').close()
-        return True
+        click.open_file(target_file, 'w').close()
+        return target_file
     else:
         click.echo('Cannot continue without target file', color='R')
         sys.exit(1)
@@ -30,4 +31,19 @@ def confirm_target_file(target_file: str = None) -> bool:
 
 def get_key_value_pair(key: str, default: str='') -> tuple:
     """Prompts the user for a value and provides an optional default"""
-    return click.prompt(key, default=default, type=str)
+    return click.prompt(key.upper(), default=default, type=str)
+
+
+def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool):
+    merged = existing.copy()
+
+    template_keys = set(k.upper() for k in existing.keys())
+    existing_keys = set(k.upper() for k in template.keys())
+
+    keys = template_keys.difference(existing_keys) if skip_existing else template_keys
+
+    for key in keys:
+        default = existing.get(key, template[key])
+        merged[key] = get_key_value_pair(key, default)
+
+    return merged

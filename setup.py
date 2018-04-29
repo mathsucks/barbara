@@ -9,6 +9,10 @@ setup(
         author='Matthew de Verteuil',
         author_email='mverteuil@github.com',
         description='Environment variable management',
+        install_requires=[
+            'Click',
+            'python-dotenv',
+        ],
         entry_points = '''
         [console_scripts]
         barb=barbara:barbara
