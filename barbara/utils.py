@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from collections.__init__ import OrderedDict
 
@@ -6,6 +7,7 @@ import click
 from dotenv import find_dotenv
 
 DEFAULT_ENV_FILENAME = '.env'
+VARIABLE_MATCHER = re.compile(r'(?P<variable>\[(?P<var_name>\w+)(:(?P<default>\w+))?\])')
 
 
 def confirm_target_file(target_file: str = None) -> bool:
@@ -31,14 +33,27 @@ def confirm_target_file(target_file: str = None) -> bool:
 
 def get_key_value_pair(key: str, default: str='') -> tuple:
     """Prompts the user for a value and provides an optional default"""
-    return click.prompt(key.upper(), default=default, type=str)
+    if VARIABLE_MATCHER.match(default):
+        click.secho(f'{key}:', fg='green')
+        result = default
+        for variable, var_name, var_default in find_variables(default):
+            result = result.replace(variable, click.prompt(var_name, default=var_default))
+        return result
+    else:
+        return click.prompt(key.upper(), default=default, type=str)
 
 
-def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool):
+def find_variables(template) -> tuple:
+    for match in VARIABLE_MATCHER.finditer(template):
+        match_map = match.groupdict()
+        yield match['variable'], match_map['var_name'], match_map.get('default', None)
+
+
+def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
     merged = existing.copy()
 
-    template_keys = set(k.upper() for k in existing.keys())
-    existing_keys = set(k.upper() for k in template.keys())
+    template_keys = set(k.upper() for k in template.keys())
+    existing_keys = set(k.upper() for k in existing.keys())
 
     keys = template_keys.difference(existing_keys) if skip_existing else template_keys
 

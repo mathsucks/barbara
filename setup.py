@@ -12,6 +12,7 @@ setup(
         install_requires=[
             'Click',
             'python-dotenv',
+            'colorama',
         ],
         entry_points = '''
         [console_scripts]
