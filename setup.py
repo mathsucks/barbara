@@ -14,8 +14,23 @@ setup(
             'python-dotenv',
             'colorama',
         ],
-        entry_points = '''
+        entry_points="""
         [console_scripts]
         barb=barbara:barbara
-        ''',
+        """,
+        classifiers=[
+            'Development Status :: 4 - Beta',
+            'Environment :: Console',
+            'Intended Audience :: Developers',
+            'Intended Audience :: System Administrators',
+            'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+            'Operating System :: MacOS',
+            'Operating System :: POSIX :: Linux',
+            'Operating System :: Unix',
+            'Programming Language :: Python :: 3',
+            'Programming Language :: Python :: 3 :: Only',
+            'Topic :: Software Development',
+            'Topic :: System',
+            'Topic :: Terminals',
+        ]
 )
