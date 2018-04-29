@@ -6,12 +6,21 @@ from collections.__init__ import OrderedDict
 import click
 from dotenv import find_dotenv
 
+from . import __version__
+
 
 #: Default name to use for new files when none are discovered or given
 DEFAULT_ENV_FILENAME = '.env'
 
 #: Regular expression for matching sub-variables to fill in
 VARIABLE_MATCHER = re.compile(r'(?P<variable>\[(?P<var_name>\w+)(:(?P<default>\w+))?\])')
+
+
+def print_version(ctx, param, value):
+    if not value or ctx.resilient_parsing:
+        return
+    click.echo(f'Barbara v{__version__}')
+    ctx.exit()
 
 
 def confirm_target_file(target_file: str = None) -> bool:

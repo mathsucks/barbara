@@ -4,14 +4,14 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pytest = "*"
 python-dotenv = "*"
 click = "*"
 
 [dev-packages]
 "e1839a8" = {path = ".", editable = true}
-pdbpp = "*"
 coverage = "*"
+pdbpp = "*"
+pytest = "*"
 pytest-cov = "*"
 
 [requires]

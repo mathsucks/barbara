@@ -2,6 +2,8 @@ import os
 
 from setuptools import setup
 
+from barbara import __version__
+
 
 _here = os.path.abspath(os.path.dirname(__file__))
 
@@ -11,7 +13,7 @@ with open(os.path.join(_here, 'README.rst')) as f:
 
 setup(
         name='barbara',
-        version='0.2',
+        version=__version__,
         packages=['barbara'],
         url='http://github.com/mverteuil/barbara',
         license='GNU General Public License v3.0',
@@ -26,7 +28,7 @@ setup(
         ],
         entry_points="""
         [console_scripts]
-        barb=barbara:barbara
+        barb=barbara.cli:barbara
         """,
         classifiers=[
             'Development Status :: 4 - Beta',
