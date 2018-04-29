@@ -1,4 +1,13 @@
+import os
+
 from setuptools import setup
+
+
+_here = os.path.abspath(os.path.dirname(__file__))
+
+with open(os.path.join(_here, 'README.rst')) as f:
+    long_description = f.read()
+
 
 setup(
         name='barbara',
@@ -9,6 +18,7 @@ setup(
         author='Matthew de Verteuil',
         author_email='mverteuil@github.com',
         description='Environment variable management',
+        long_description=long_description,
         install_requires=[
             'Click',
             'python-dotenv',
