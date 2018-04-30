@@ -50,7 +50,7 @@ def get_value_for_key(key: str, default: str = '') -> str:
     If the default contains sub-variables, the user is shown the key name and then prompted for each segment.
     Sub-variables can also contain defaults.
     """
-    if VARIABLE_MATCHER.match(default):
+    if VARIABLE_MATCHER.search(default):
         click.secho(f'{key}:', fg='green')
         result = default
         for variable, var_name, var_default in find_subvariables(default):

@@ -76,7 +76,7 @@ def test_confirm_target_default_create_rejected(patched_click, patched_os, patch
 @mock.patch('barbara.utils.VARIABLE_MATCHER')
 def test_get_value_for_key(patched_matcher, patched_click):
     """Should request user response for key, and suggest default if provided"""
-    patched_matcher.match.return_value = False
+    patched_matcher.search.return_value = False
     patched_click.prompt.return_value = 'user-response'
     result = utils.get_value_for_key('test-key', 'test-default')
     assert result == 'user-response'
@@ -102,6 +102,7 @@ def test_get_value_for_key_with_subvariables(patched_matcher, patched_find, patc
     ('\[[test]\]', '[test]', 'test', None),
     ('[test:tset]', '[test:tset]', 'test', 'tset'),
     ('[test:[tset:test]]', '[tset:test]', 'tset', 'test'),
+    ('http://[username:user]:password@host.com/path', '[username:user]', 'username', 'user'),
 ])
 def test_subvariables(template, subvariable, sub_name, sub_default):
     """Should parse subvariables within reason"""
