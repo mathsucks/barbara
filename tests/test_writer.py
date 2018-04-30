@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from unittest import mock
 
-from barbara import Writer
+from barbara.writer import Writer
 
 
 @mock.patch('barbara.writer.shutil')
