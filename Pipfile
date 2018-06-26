@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 click = "*"
+"boto3" = "*"
 
 [dev-packages]
 "e1839a8" = {path = ".", editable = true}

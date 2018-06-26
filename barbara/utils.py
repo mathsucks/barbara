@@ -37,11 +37,16 @@ def confirm_target_file(target_file: str = None) -> bool:
     if os.path.exists(target_file):
         return click.prompt('Destination file', default=target_file)
     elif click.confirm(f'{target_file} does not exist. Create it?'):
-        click.open_file(target_file, 'w').close()
-        return target_file
+        return create_target_file(target_file)
     else:
         click.echo('Cannot continue without target file', color='R')
         sys.exit(1)
+
+
+def create_target_file(target_file: str = None) -> bool:
+    """Creates an empty file at the target."""
+    click.open_file(target_file, 'w').close()
+    return target_file
 
 
 def get_value_for_key(key: str, default: str = '') -> str:

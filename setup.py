@@ -25,6 +25,7 @@ setup(
             'Click',
             'python-dotenv',
             'colorama',
+            'boto3',
         ],
         entry_points="""
         [console_scripts]
