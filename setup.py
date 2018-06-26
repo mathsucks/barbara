@@ -25,10 +25,12 @@ setup(
             'Click',
             'python-dotenv',
             'colorama',
+            'boto3',
         ],
         entry_points="""
         [console_scripts]
-        barb=barbara.cli:barbara
+        barb=barbara.cli:barbara_develop
+        barb-deploy=barbara.cli:barbara_deploy
         """,
         classifiers=[
             'Development Status :: 4 - Beta',
