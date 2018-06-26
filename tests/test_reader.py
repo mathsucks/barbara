@@ -1,3 +1,5 @@
+from unittest import mock
+
 from barbara import reader
 
 
@@ -52,3 +54,20 @@ def test_read_multi_line_with_comment(tmpdir):
     env = r.read()
     assert 'withcomment' in env
     assert 'hasvalue' in env.values()
+
+
+@mock.patch('barbara.reader.boto3')
+def test_read_from_ssm(patched_boto3):
+    """Should retrieve deployment values from AWS SSM."""
+    value_formatter = lambda value: {'Parameter': {'Value': value}}
+    patched_boto3.client().get_parameter.side_effect = [
+        value_formatter('value'), value_formatter('pants')
+    ]
+
+    r = reader.SSMReader('/prefix/', ['key', 'derp'])
+    values = r.read()
+
+    assert 'key' in values
+    assert 'derp' in values
+    assert values['key'] == 'value'
+    assert values['derp'] == 'pants'
