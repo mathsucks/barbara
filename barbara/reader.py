@@ -1,9 +1,9 @@
+from collections import OrderedDict
+from collections import namedtuple
 import re
-from collections import OrderedDict, namedtuple
 
 import boto3
 from dotenv import dotenv_values
-
 
 
 #: Regular environment variable with a preset value
@@ -64,8 +64,3 @@ class SSMReader:
             result = client.get_parameter(Name=f'{self.prefix}{key}', WithDecryption=True)
             environ[key] = result['Parameter']['Value']
         return environ
-
-
-
-
-

@@ -2,8 +2,12 @@ import os
 
 import click
 
-from .utils import confirm_target_file, create_target_file, merge_with_prompts, print_version
-from .reader import Reader, SSMReader
+from .reader import Reader
+from .reader import SSMReader
+from .utils import confirm_target_file
+from .utils import create_target_file
+from .utils import merge_with_prompts
+from .utils import print_version
 from .writer import Writer
 
 
