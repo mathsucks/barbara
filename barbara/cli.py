@@ -2,13 +2,13 @@ import os
 
 import click
 
-from .reader import Reader
-from .reader import SSMReader
+from .readers import EnvTemplateReader
+from .readers import SSMReader
 from .utils import confirm_target_file
 from .utils import create_target_file
 from .utils import merge_with_prompts
 from .utils import print_version
-from .writer import Writer
+from .writers import Writer
 
 
 @click.command()
@@ -22,8 +22,8 @@ def barbara_develop(skip_existing, destination, template):
 
     click.echo(f'Creating environment: {confirmed_target}')
 
-    environment_template = Reader(template).read()
-    existing_environment = Reader(confirmed_target).read()
+    environment_template = EnvTemplateReader(template).read()
+    existing_environment = EnvTemplateReader(confirmed_target).read()
     click.echo(f'Skip Existing: {skip_existing}')
 
     environment = merge_with_prompts(existing_environment, environment_template, skip_existing)
@@ -45,7 +45,7 @@ def barbara_deploy(destination, template, prefix):
 
     click.echo(f'Creating environment: {confirmed_target}')
 
-    environment_template = Reader(template).read()
+    environment_template = EnvTemplateReader(template).read()
     environment = SSMReader(prefix, environment_template.keys()).read()
 
     Writer(confirmed_target, environment).write()

@@ -13,7 +13,7 @@ EnvVariable = namedtuple('EnvVariable', ('name', 'preset', ), )
 EnvVariableTemplate = namedtuple('EnvVariableTemplate', ('name', 'template', 'subvariables', ), )
 
 
-class Reader:
+class EnvTemplateReader:
     """Reads environment variables from file into an ordered dictionary"""
 
     #: Regular expression for matching sub-variables to fill in
@@ -25,7 +25,7 @@ class Reader:
     @staticmethod
     def find_subvariables(preset: str) -> tuple:
         """Search a string for sub-variables and emit the matches as they are discovered"""
-        for match in Reader.VARIABLE_MATCHER.finditer(preset):
+        for match in EnvTemplateReader.VARIABLE_MATCHER.finditer(preset):
             match_map = match.groupdict()
             yield EnvVariable(match_map['name'], match_map.get('preset', None))
 

@@ -6,8 +6,8 @@ import click
 from dotenv import find_dotenv
 
 from . import __version__
-from .reader import EnvVariable
-from .reader import EnvVariableTemplate
+from .readers import EnvVariable
+from .readers import EnvVariableTemplate
 
 
 #: Default name to use for new files when none are discovered or given

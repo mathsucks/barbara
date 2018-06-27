@@ -2,7 +2,7 @@ from unittest import mock
 
 import pytest
 
-from barbara import reader
+from barbara import readers
 
 
 def test_read_single_line(tmpdir):
@@ -10,7 +10,7 @@ def test_read_single_line(tmpdir):
     p = tmpdir.join('.env')
     p.write('key=value')
 
-    r = reader.Reader(p)
+    r = readers.EnvTemplateReader(p)
     values = r.read()
     assert 'key' in values
 
@@ -23,7 +23,7 @@ def test_read_multi_line(tmpdir):
     derp=pants
     ''')
 
-    r = reader.Reader(p)
+    r = readers.EnvTemplateReader(p)
     values = r.read()
     assert 'key' in values
     assert 'derp' in values
@@ -37,7 +37,7 @@ def test_read_single_line_with_comment(tmpdir):
     withcomment=hasvalue
     """)
 
-    r = reader.Reader(p)
+    r = readers.EnvTemplateReader(p)
     env = r.read()
     assert 'withcomment' in env
     assert env['withcomment'].preset == 'hasvalue'
@@ -52,13 +52,13 @@ def test_read_multi_line_with_comment(tmpdir):
     # withcomment=ignoreme
     """)
 
-    r = reader.Reader(p)
+    r = readers.EnvTemplateReader(p)
     env = r.read()
     assert 'withcomment' in env
     assert env['withcomment'].preset =='hasvalue'
 
 
-@mock.patch('barbara.reader.boto3')
+@mock.patch('barbara.readers.boto3')
 def test_read_from_ssm(patched_boto3):
     """Should retrieve deployment values from AWS SSM."""
     value_formatter = lambda value: {'Parameter': {'Value': value}}
@@ -66,7 +66,7 @@ def test_read_from_ssm(patched_boto3):
         value_formatter('value'), value_formatter('pants')
     ]
 
-    r = reader.SSMReader('/prefix/', ['key', 'derp'])
+    r = readers.SSMReader('/prefix/', ['key', 'derp'])
     values = r.read()
 
     assert 'key' in values
@@ -84,6 +84,6 @@ def test_read_from_ssm(patched_boto3):
 ])
 def test_subvariables(template, sub_name, sub_default):
     """Should parse subvariables within reason"""
-    result = next(reader.Reader.find_subvariables(template))
+    result = next(readers.EnvTemplateReader.find_subvariables(template))
     assert result[0] == sub_name
     assert result[1] == sub_default
