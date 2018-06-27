@@ -4,8 +4,8 @@ from unittest import mock
 import pytest
 
 from barbara import utils
-from barbara.readers import EnvVariable
-from barbara.readers import EnvVariableTemplate
+from barbara.variables import EnvVariable
+from barbara.variables import EnvVariableTemplate
 
 
 @mock.patch('barbara.utils.os')

@@ -1,20 +1,16 @@
-from fnmatch import fnmatch
-from collections import ChainMap
 from collections import OrderedDict
-from collections import namedtuple
-import re
+from fnmatch import fnmatch
 from functools import partial
+import re
 
 import boto3
 from dotenv import dotenv_values
 import yaml
 
-
-#: Regular environment variable with a preset value
-EnvVariable = namedtuple('EnvVariable', ('name', 'preset', ), )
-
-#: Complex environment variable with one or more subvariables which are used for templating values
-EnvVariableTemplate = namedtuple('EnvVariableTemplate', ('name', 'template', 'subvariables', ), )
+from .utils import find_most_specific_match
+from .utils import key_list_generator
+from .variables import EnvVariable
+from .variables import EnvVariableTemplate
 
 
 def guess_reader_by_file_extension(filename):
@@ -80,10 +76,14 @@ class YAMLConfigReader:
         return preset['template']
 
     def _read(self) -> OrderedDict:
-        with open(self.source, 'r', encoding='utf8') as config_file:
-            return yaml.load(config_file.read())
+        try:
+            with open(self.source, 'r', encoding='utf8') as config_file:
+                return yaml.load(config_file.read())
+        except TypeError:
+            return yaml.load(self.source.read())
 
     def read(self) -> OrderedDict:
+
         environ = self._read()['environment']
         for key, preset in environ.items():
             subvariables = list(self.find_subvariables(preset))
@@ -131,13 +131,13 @@ class YAMLConfigReader:
                 '/advanced/staging/worker/HOST_TYPE',
             ]
         """
-        yaml_config = self.read()
-        variables = yaml_config['environment']['defaults']
-        overrides = yaml_config['deployments']
-        result = []
-        path_segments = resource_path.split('/')
-        for variable in variables:
-            pass
+        yaml_config = self._read()
+        yaml_variables = yaml_config['environment']
+        yaml_overrides = yaml_config['deployments']
+
+        overrides = list(key_list_generator(yaml_overrides, f'/{yaml_config["project"]}'))
+        return [find_most_specific_match(v, resource_path, overrides) for v in yaml_variables.keys()]
+
 
 
 class SSMReader:

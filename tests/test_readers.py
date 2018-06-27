@@ -181,4 +181,3 @@ class TestYAMLConfigReader:
             - ENVIRONMENT_NAME
             - DATABASE_URL
         ''')
-
