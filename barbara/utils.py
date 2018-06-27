@@ -1,5 +1,4 @@
 import os
-import re
 import sys
 from collections.__init__ import OrderedDict
 
@@ -7,13 +6,11 @@ import click
 from dotenv import find_dotenv
 
 from . import __version__
+from .reader import EnvVariable, EnvVariableTemplate
 
 
 #: Default name to use for new files when none are discovered or given
 DEFAULT_ENV_FILENAME = '.env'
-
-#: Regular expression for matching sub-variables to fill in
-VARIABLE_MATCHER = re.compile(r'(?P<variable>\[(?P<var_name>\w+)(:(?P<default>\w+))?\])')
 
 
 def print_version(ctx, param, value):
@@ -49,34 +46,24 @@ def create_target_file(target_file: str = None) -> bool:
     return target_file
 
 
-def get_value_for_key(key: str, default: str = '') -> str:
-    """Prompts the user for a value and provides an optional default
+def prompt_user_for_value(env_variable) -> str:
+    """Prompts the user for a value for an EnvVariable or EnvVariableTemplate.
 
-    If the default contains sub-variables, the user is shown the key name and then prompted for each segment.
-    Sub-variables can also contain defaults.
+    If the variable contains subvariables, the user is prompted for each subvariable before the result is returned as
+    a formatted string.
     """
-    if VARIABLE_MATCHER.search(default):
-        click.secho(f'{key}:', fg='green')
-        result = default
-        for variable, var_name, var_default in find_subvariables(default):
-            result = result.replace(variable, click.prompt(var_name, default=var_default))
-        return result
-    else:
-        return click.prompt(key, default=default, type=str)
-
-
-def find_subvariables(value: str) -> tuple:
-    """Search a string for sub-variables and emit the matches as they are discovered"""
-    for match in VARIABLE_MATCHER.finditer(value):
-        match_map = match.groupdict()
-        yield match['variable'], match_map['var_name'], match_map.get('default', None)
+    try:
+        context = {prompt.name: prompt_user_for_value(prompt) for prompt in env_variable.subvariables}
+        return env_variable.template.format(**context)
+    except AttributeError:
+        return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
 def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
     """Merge two ordered dicts and prompts the user for values along the way
 
     If skipping existing keys, only newly discovered keys will be prompted for. Once a key exists, the existing
-    value will be given as a default, when the key doesn't exist the template default is presented. A template with a
+    value will be given as a preset, when the key doesn't exist the template preset is presented. A template with a
     missing value is considered an error.
     """
     merged = existing.copy()
@@ -87,7 +74,7 @@ def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existi
     keys = template_keys.difference(existing_keys) if skip_existing else template_keys
 
     for key in sorted(keys):
-        default = existing.get(key, template[key])
-        merged[key] = get_value_for_key(key, default)
+        preset = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
+        merged[key] = prompt_user_for_value(preset)
 
     return OrderedDict(sorted(merged.items()))

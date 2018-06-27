@@ -1,5 +1,7 @@
 from unittest import mock
 
+import pytest
+
 from barbara import reader
 
 
@@ -38,7 +40,7 @@ def test_read_single_line_with_comment(tmpdir):
     r = reader.Reader(p)
     env = r.read()
     assert 'withcomment' in env
-    assert 'hasvalue' in env.values()
+    assert env['withcomment'].preset == 'hasvalue'
 
 
 def test_read_multi_line_with_comment(tmpdir):
@@ -53,7 +55,7 @@ def test_read_multi_line_with_comment(tmpdir):
     r = reader.Reader(p)
     env = r.read()
     assert 'withcomment' in env
-    assert 'hasvalue' in env.values()
+    assert env['withcomment'].preset =='hasvalue'
 
 
 @mock.patch('barbara.reader.boto3')
@@ -71,3 +73,17 @@ def test_read_from_ssm(patched_boto3):
     assert 'derp' in values
     assert values['key'] == 'value'
     assert values['derp'] == 'pants'
+
+
+@pytest.mark.parametrize('template,sub_name,sub_default', [
+    ('[test]', 'test', None),
+    ('\[[test]\]', 'test', None),
+    ('[test:tset]', 'test', 'tset'),
+    ('[test:[tset:test]]', 'tset', 'test'),
+    ('http://[username:user]:password@host.com/path', 'username', 'user'),
+])
+def test_subvariables(template, sub_name, sub_default):
+    """Should parse subvariables within reason"""
+    result = next(reader.Reader.find_subvariables(template))
+    assert result[0] == sub_name
+    assert result[1] == sub_default
