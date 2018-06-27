@@ -15,6 +15,7 @@ pdbpp = "*"
 pytest = "*"
 pytest-cov = "*"
 ipython = "*"
+isort = "*"
 
 [requires]
 python_version = "3.6"

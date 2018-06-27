@@ -1,12 +1,13 @@
+from collections.__init__ import OrderedDict
 import os
 import sys
-from collections.__init__ import OrderedDict
 
 import click
 from dotenv import find_dotenv
 
 from . import __version__
-from .reader import EnvVariable, EnvVariableTemplate
+from .reader import EnvVariable
+from .reader import EnvVariableTemplate
 
 
 #: Default name to use for new files when none are discovered or given
