@@ -23,7 +23,7 @@ def barbara_develop(skip_existing, destination, template):
 
     TemplateReader = readers.guess_reader_by_file_extension(template)
     environment_template = TemplateReader(template).read()
-    existing_environment = readers.EnvTemplateReader(confirmed_target).read()
+    existing_environment = readers.EnvReader(confirmed_target).read()
     click.echo(f'Skip Existing: {skip_existing}')
 
     environment = merge_with_prompts(existing_environment, environment_template, skip_existing)

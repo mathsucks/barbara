@@ -6,13 +6,18 @@ import yaml
 from barbara import readers
 
 
-class TestEnvTemplateReader:
+class TestEnvReader:
+    reader = readers.EnvReader
+
+    def assert_env_value(self, env, key, value):
+        assert env[key] == value
+    
     def test_read_single_line(self, tmpdir):
         """Should contain key name in result"""
         p = tmpdir.join('.env')
         p.write('key=value')
 
-        r = readers.EnvTemplateReader(p)
+        r = self.reader(p)
         values = r.read()
         assert 'key' in values
 
@@ -24,7 +29,7 @@ class TestEnvTemplateReader:
         derp=pants
         ''')
 
-        r = readers.EnvTemplateReader(p)
+        r = self.reader(p)
         values = r.read()
         assert 'key' in values
         assert 'derp' in values
@@ -37,10 +42,10 @@ class TestEnvTemplateReader:
         withcomment=hasvalue
         """)
 
-        r = readers.EnvTemplateReader(p)
+        r = self.reader(p)
         env = r.read()
         assert 'withcomment' in env
-        assert env['withcomment'].preset == 'hasvalue'
+        self.assert_env_value(env, 'withcomment', 'hasvalue')
 
     def test_read_multi_line_with_comment(self, tmpdir):
         """Should not clobber with commented values"""
@@ -51,10 +56,17 @@ class TestEnvTemplateReader:
         # withcomment=ignoreme
         """)
 
-        r = readers.EnvTemplateReader(p)
+        r = self.reader(p)
         env = r.read()
         assert 'withcomment' in env
-        assert env['withcomment'].preset =='hasvalue'
+        self.assert_env_value(env, 'withcomment', 'hasvalue')
+
+
+class TestEnvTemplateReader(TestEnvReader):
+    reader = readers.EnvTemplateReader
+
+    def assert_env_value(self, env, key, value):
+        assert env[key].preset == value
 
     @pytest.mark.parametrize('template,sub_name,sub_default', [
         ('[test]', 'test', None),
@@ -65,7 +77,7 @@ class TestEnvTemplateReader:
     ])
     def test_subvariables(self, template, sub_name, sub_default):
         """Should parse subvariables within reason"""
-        result = next(readers.EnvTemplateReader.find_subvariables(template))
+        result = next(self.reader.find_subvariables(template))
         assert result[0] == sub_name
         assert result[1] == sub_default
 

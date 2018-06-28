@@ -22,14 +22,21 @@ def guess_reader_by_file_extension(filename):
         return EnvTemplateReader
 
 
-class EnvTemplateReader:
+class EnvReader:
     """Reads environment variables from file into an ordered dictionary"""
+    def __init__(self, source):
+        self.source = source
+
+    def read(self) -> OrderedDict:
+        filename = self.source.name if hasattr(self.source, 'name') else self.source
+        return dotenv_values(filename)
+
+
+class EnvTemplateReader(EnvReader):
+    """Reads environment variable template from file into an ordered dictionary"""
 
     #: Regular expression for matching sub-variables to fill in
     VARIABLE_MATCHER = re.compile(r'(?P<variable>\[(?P<name>\w+)(:(?P<preset>\w+))?\])')
-
-    def __init__(self, source):
-        self.source = source
 
     @staticmethod
     def find_subvariables(preset: str) -> tuple:
@@ -42,14 +49,8 @@ class EnvTemplateReader:
         """Generate a python string template to populate with the subvariable results"""
         return self.VARIABLE_MATCHER.sub(r'{\2}', source)
 
-    def _read(self) -> OrderedDict:
-        try:
-            return dotenv_values(self.source)
-        except TypeError:
-            return dotenv_values(self.source.name)
-
     def read(self) -> OrderedDict:
-        environ = self._read()
+        environ = super(EnvTemplateReader, self).read()
         for key, preset in environ.items():
             subvariables = list(self.find_subvariables(preset))
             if subvariables:
@@ -138,7 +139,6 @@ class YAMLConfigReader:
 
         overrides = list(key_list_generator(yaml_overrides, f'/{yaml_config["project"]}'))
         return [find_most_specific_match(v, resource_path, overrides) for v in yaml_variables.keys()]
-
 
 
 class SSMReader:
