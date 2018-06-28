@@ -15,6 +15,7 @@ from .variables import EnvVariableTemplate
 
 def guess_reader_by_file_extension(filename):
     """Guess which reader to return using naive filetype check"""
+    filename = filename.name if hasattr(filename, 'name') else filename
     if any(map(partial(fnmatch, filename), ('*.yml', '*.yaml'))):
         return YAMLConfigReader
     else:
