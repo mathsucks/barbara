@@ -26,6 +26,7 @@ setup(
             'python-dotenv',
             'colorama',
             'boto3',
+            'pyyaml',
         ],
         entry_points="""
         [console_scripts]
