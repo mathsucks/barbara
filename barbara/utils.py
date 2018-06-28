@@ -82,7 +82,7 @@ def prompt_user_for_value(env_variable) -> str:
     a formatted string.
     """
     try:
-        click.echo(f'{env_variable.name}:')
+        click.echo(f'{env_variable.name} ({env_variable.template}):')
         context = {prompt.name: prompt_user_for_value(prompt) for prompt in env_variable.subvariables}
         return env_variable.template.format(**context)
     except AttributeError:
