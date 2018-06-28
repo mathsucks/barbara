@@ -1,4 +1,4 @@
-from collections.__init__ import namedtuple
+from collections import namedtuple
 
 
 #: Regular environment variable with a preset value

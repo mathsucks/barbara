@@ -1,4 +1,4 @@
-from collections.__init__ import OrderedDict
+from collections import OrderedDict
 import os
 import sys
 from typing import AsyncIterable
