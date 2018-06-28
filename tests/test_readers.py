@@ -174,10 +174,24 @@ class TestYAMLConfigReader:
           DEBUG: 1
           ENVIRONMENT_NAME: development
           DATABASE_URL: sqlite:///simple.db
+          NODE_NAME: localhost
             
         deployments:
           - DEBUG
           - sandbox:
             - ENVIRONMENT_NAME
             - DATABASE_URL
+            - app_server:
+              - NODE_NAME
+            - worker:
+              - NODE_NAME
+              - DATABASE_URL
         ''')
+        r = readers.YAMLConfigReader(p)
+        key_list = r.generate_key_list_for_resource('/test/sandbox/worker/')
+        assert '/test/DEBUG' in key_list
+        assert '/test/sandbox/ENVIRONMENT_NAME' in key_list
+        assert '/test/sandbox/worker/NODE_NAME' in key_list
+        assert '/test/sandbox/worker/DATABASE_URL' in key_list
+        assert len(key_list) == 4
+
