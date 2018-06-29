@@ -11,7 +11,7 @@ class TestEnvReader:
 
     def assert_env_value(self, env, key, value):
         assert env[key] == value
-    
+
     def test_read_single_line(self, tmpdir):
         """Should contain key name in result"""
         p = tmpdir.join('.env')
@@ -86,7 +86,7 @@ class TestSSMReader:
     @mock.patch('barbara.readers.boto3')
     def test_read_from_ssm(self, patched_boto3):
         """Should retrieve deployment values from AWS SSM."""
-        value_formatter = lambda value: {'Parameter': {'Value': value}}
+        value_formatter = lambda value: {'Parameter': {'Value': value}}  # noqa
         patched_boto3.client().get_parameter.side_effect = [
             value_formatter('value'), value_formatter('pants')
         ]
@@ -106,7 +106,7 @@ class TestYAMLConfigReader:
         p = tmpdir.join('.env.yml')
         p.write('''
         project: test
-        
+
         environment:
           ENVIRONMENT_NAME: development
         ''')
@@ -120,7 +120,7 @@ class TestYAMLConfigReader:
         p = tmpdir.join('.env.yml')
         p.write('''
         project: test
-        
+
         environment:
           ENVIRONMENT_NAME: development
           DATABASE_URL: sqlite:///simple.db
@@ -136,7 +136,7 @@ class TestYAMLConfigReader:
         p = tmpdir.join('.env.yml')
         p.write("""
         project: test
-        
+
         environment:
           ENVIRONMENT_NAME: development  # this is not part of the value
         """)
@@ -163,10 +163,10 @@ class TestYAMLConfigReader:
     def test_subvariables(self):
         """Should parse subvariables correctly"""
         p = yaml.load("""
-        ENVIRONMENT_NAME: 
+        ENVIRONMENT_NAME:
           template: "{part1}-{part2}"
           subvariables:
-            subvar1: subvalue1 
+            subvar1: subvalue1
             subvar2: subvalue2
         """)
 
@@ -181,13 +181,13 @@ class TestYAMLConfigReader:
         p = tmpdir.join('.env.yml')
         p.write('''
         project: test
-        
+
         environment:
           DEBUG: 1
           ENVIRONMENT_NAME: development
           DATABASE_URL: sqlite:///simple.db
           NODE_NAME: localhost
-            
+
         deployments:
           - DEBUG
           - sandbox:

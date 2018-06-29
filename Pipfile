@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 click = "*"
-"boto3" = "*"
+boto3 = "*"
 pyyaml = "*"
 
 [dev-packages]
@@ -17,7 +17,10 @@ pytest = "*"
 pytest-cov = "*"
 ipython = "*"
 isort = "*"
-"flake8" = "*"
+flake8 = "*"
+flake8-bugbear = "*"
+flake8-mypy = "==17.8.0"
+flake8-polyfill = "==1.0.2"
 
 [requires]
 python_version = "3.6"
