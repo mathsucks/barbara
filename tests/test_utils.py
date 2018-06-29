@@ -1,5 +1,3 @@
-from collections import OrderedDict
-from typing import Tuple, Dict
 from unittest import mock
 
 import pytest

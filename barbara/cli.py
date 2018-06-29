@@ -2,10 +2,10 @@ import os
 
 import click
 
-from barbara.utils import merge_with_presets
 from . import readers
 from .utils import confirm_target_file
 from .utils import create_target_file
+from .utils import merge_with_presets
 from .utils import merge_with_prompts
 from .utils import print_version
 from .writers import Writer
