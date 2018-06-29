@@ -19,7 +19,14 @@ from .writers import Writer
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')  # noqa
 def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
-    destination_handler = create_target_file if zero_input else confirm_target_file
+    if zero_input:
+        destination = '.env'
+        destination_handler = confirm_target_file
+        merge_strategy = merge_with_presets
+    else:
+        destination_handler = create_target_file
+        merge_strategy = merge_with_prompts
+
     confirmed_target = destination if os.path.exists(destination) else destination_handler(destination)
 
     click.echo(f'Creating environment: {confirmed_target}')
@@ -29,7 +36,6 @@ def barbara_develop(skip_existing, destination, template, zero_input):
     existing_environment = readers.EnvReader(confirmed_target).read()
     click.echo(f'Skip Existing: {skip_existing}')
 
-    merge_strategy = merge_with_presets if zero_input else merge_with_prompts
     environment = merge_strategy(existing_environment, environment_template, skip_existing)
 
     Writer(confirmed_target, environment).write()
