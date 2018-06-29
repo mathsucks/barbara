@@ -19,7 +19,8 @@ from .writers import Writer
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')  # noqa
 def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
-    confirmed_target = destination if os.path.exists(destination) else confirm_target_file(destination)
+    destination_handler = create_target_file if zero_input else confirm_target_file
+    confirmed_target = destination if os.path.exists(destination) else destination_handler(destination)
 
     click.echo(f'Creating environment: {confirmed_target}')
 
