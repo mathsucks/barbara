@@ -89,6 +89,29 @@ def prompt_user_for_value(env_variable) -> str:
         return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
+def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
+    """Merge two ordered dicts and uses the presets for values along the way
+
+    If skipping existing keys, only newly discovered keys will be added. Once a key exists, the existing
+    value will be used as the preset, when the key doesn't exist the template preset is assigned. A template variable
+    with a missing preset is considered an error.
+    """
+    merged = {}
+
+    for key in sorted(template.keys()):
+        if not skip_existing and existing.get(key):
+            existing_value = EnvVariable(key, existing.get(key))
+        else:
+            existing_value = template.get(key)
+
+        if isinstance(existing_value, EnvVariable):
+            merged[key] = existing_value.preset
+        else:
+            merged[key] = existing_value.template.format(**{k: v for k, v in existing_value.subvariables})
+
+    return OrderedDict(sorted(merged.items()))
+
+
 def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
     """Merge two ordered dicts and prompts the user for values along the way
 

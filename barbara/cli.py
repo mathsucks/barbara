@@ -5,6 +5,7 @@ import click
 from . import readers
 from .utils import confirm_target_file
 from .utils import create_target_file
+from .utils import merge_with_presets
 from .utils import merge_with_prompts
 from .utils import print_version
 from .writers import Writer
@@ -14,8 +15,9 @@ from .writers import Writer
 @click.option('-s', '--skip-existing', default=True, type=click.BOOL, help='Skip over any keys which already exist in the destination file')
 @click.option('-d', '--destination', default='', type=str, help='Destination for serialized environment variables')
 @click.option('-t', '--template', default='.env.yml', type=click.File(), help='Source for environment and default values')
+@click.option('-z', '--zero-input', is_flag=True, help='Skip prompts and use presets verbatim. Useful for CI environments.')
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')
-def barbara_develop(skip_existing, destination, template):
+def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
     confirmed_target = destination if os.path.exists(destination) else confirm_target_file(destination)
 
@@ -26,7 +28,8 @@ def barbara_develop(skip_existing, destination, template):
     existing_environment = readers.EnvReader(confirmed_target).read()
     click.echo(f'Skip Existing: {skip_existing}')
 
-    environment = merge_with_prompts(existing_environment, environment_template, skip_existing)
+    merge_strategy = merge_with_presets if zero_input else merge_with_prompts
+    environment = merge_strategy(existing_environment, environment_template, skip_existing)
 
     Writer(confirmed_target, environment).write()
 

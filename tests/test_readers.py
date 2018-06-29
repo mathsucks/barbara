@@ -206,4 +206,3 @@ class TestYAMLConfigReader:
         assert '/test/sandbox/worker/NODE_NAME' in key_list
         assert '/test/sandbox/worker/DATABASE_URL' in key_list
         assert len(key_list) == 4
-
