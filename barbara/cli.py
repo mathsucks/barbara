@@ -21,10 +21,10 @@ def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
     if zero_input:
         destination = '.env'
-        destination_handler = confirm_target_file
+        destination_handler = create_target_file
         merge_strategy = merge_with_presets
     else:
-        destination_handler = create_target_file
+        destination_handler = confirm_target_file
         merge_strategy = merge_with_prompts
 
     confirmed_target = destination if os.path.exists(destination) else destination_handler(destination)
