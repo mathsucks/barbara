@@ -2,6 +2,11 @@ from collections import OrderedDict
 from fnmatch import fnmatch
 from functools import partial
 import re
+from typing import Generator
+from typing import List
+from typing import TextIO
+from typing import Type
+from typing import Union
 
 import boto3
 from dotenv import dotenv_values
@@ -13,10 +18,12 @@ from .variables import EnvVariable
 from .variables import EnvVariableTemplate
 
 
-def guess_reader_by_file_extension(filename):
+def guess_reader_by_file_extension(file_or_name: Union[str, TextIO]) -> Type:
     """Guess which reader to return using naive filetype check"""
-    filename = filename.name if hasattr(filename, 'name') else filename
-    if any(map(partial(fnmatch, filename), ('*.yml', '*.yaml'))):
+    filename = getattr(file_or_name, 'name', file_or_name)
+    filename_matcher = partial(fnmatch, filename)
+    yaml_extensions = ('*.yml', '*.yaml')
+    if any(filename_matcher(extension) for extension in yaml_extensions):
         return YAMLConfigReader
     else:
         return EnvTemplateReader
@@ -24,11 +31,11 @@ def guess_reader_by_file_extension(filename):
 
 class EnvReader:
     """Reads environment variables from file into an ordered dictionary"""
-    def __init__(self, source):
+    def __init__(self, source: Union[str, TextIO]) -> None:
         self.source = source
 
     def read(self) -> OrderedDict:
-        filename = self.source.name if hasattr(self.source, 'name') else self.source
+        filename = getattr(self.source, 'name', self.source)
         return dotenv_values(filename)
 
 
@@ -39,7 +46,7 @@ class EnvTemplateReader(EnvReader):
     VARIABLE_MATCHER = re.compile(r'(?P<variable>\[(?P<name>\w+)(:(?P<preset>\w+))?\])')
 
     @staticmethod
-    def find_subvariables(preset: str) -> tuple:
+    def find_subvariables(preset: str) -> Generator[EnvVariable, None, None]:
         """Search a string for sub-variables and emit the matches as they are discovered"""
         for match in EnvTemplateReader.VARIABLE_MATCHER.finditer(preset):
             match_map = match.groupdict()
@@ -62,30 +69,25 @@ class EnvTemplateReader(EnvReader):
 
 class YAMLConfigReader:
     """Reads environment variables from YAML configuration into an ordered dictionary"""
-    def __init__(self, source):
+    def __init__(self, source: TextIO) -> None:
         self.source = source
 
     @staticmethod
-    def find_subvariables(preset):
+    def find_subvariables(preset: EnvVariableTemplate) -> Generator[EnvVariable, None, None]:
         try:
             for subvar_name, subvar_preset in preset['subvariables'].items():
                 yield EnvVariable(subvar_name, subvar_preset)
         except TypeError:
             return None
 
-    def _get_string_template(self, preset) -> str:
+    def _get_string_template(self, preset: EnvVariableTemplate) -> str:
         """Get the string template from the preset"""
         return preset['template']
 
     def _read(self) -> OrderedDict:
-        try:
-            with open(self.source, 'r', encoding='utf8') as config_file:
-                return yaml.load(config_file.read())
-        except TypeError:
-            return yaml.load(self.source.read())
+        return yaml.load(self.source.read())
 
     def read(self) -> OrderedDict:
-
         environ = self._read()['environment']
         for key, preset in environ.items():
             subvariables = list(self.find_subvariables(preset))
@@ -95,7 +97,7 @@ class YAMLConfigReader:
                 environ[key] = EnvVariable(key, preset)
         return environ
 
-    def generate_key_list_for_resource(self, resource_path):
+    def generate_key_list_for_resource(self, resource_path: str):
         """Using the given resource path, generate a list of keys which respects the declared overrides.
 
         This is used for generating a tree which allows overriding the more generic hierarchy elements with
@@ -143,11 +145,11 @@ class YAMLConfigReader:
 
 class SSMReader:
     """Reads environment variables from AWS SSM storage into an ordered dictionary"""
-    def __init__(self, key_list):
+    def __init__(self, key_list: List[str]) -> None:
         self.key_list = key_list
 
     def read(self) -> OrderedDict:
-        environ = OrderedDict()
+        environ = OrderedDict()  # noqa
         client = boto3.client('ssm')
         for key in self.key_list:
             result = client.get_parameter(Name=key, WithDecryption=True)

@@ -12,11 +12,11 @@ from .writers import Writer
 
 
 @click.command()
-@click.option('-s', '--skip-existing', default=True, type=click.BOOL, help='Skip over any keys which already exist in the destination file')
+@click.option('-s', '--skip-existing', default=True, type=click.BOOL, help='Skip over any keys which already exist in the destination file')  # noqa
 @click.option('-d', '--destination', default='', type=str, help='Destination for serialized environment variables')
-@click.option('-t', '--template', default='.env.yml', type=click.File(), help='Source for environment and default values')
-@click.option('-z', '--zero-input', is_flag=True, help='Skip prompts and use presets verbatim. Useful for CI environments.')
-@click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')
+@click.option('-t', '--template', default='.env.yml', type=click.File(), help='Source for environment and default values')  # noqa
+@click.option('-z', '--zero-input', is_flag=True, help='Skip prompts and use presets verbatim. Useful for CI environments.')  # noqa
+@click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')  # noqa
 def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
     confirmed_target = destination if os.path.exists(destination) else confirm_target_file(destination)
@@ -36,12 +36,11 @@ def barbara_develop(skip_existing, destination, template, zero_input):
     click.echo('Environment ready!')
 
 
-
 @click.command()
 @click.option('-d', '--destination', default='.env', type=str, help='Destination for serialized environment variables')
 @click.option('-t', '--template', default='.env.yml', type=click.File(), help='Source for environment variable keys')
 @click.option('-p', '--search-path', required=True, type=str, help='Search path to use for SSM environment variables')
-@click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')
+@click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')  # noqa
 def barbara_deploy(destination, template, search_path):
     """Deploy mode which retrieves values from AWS SSM"""
     confirmed_target = destination if os.path.exists(destination) else create_target_file(destination)

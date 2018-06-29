@@ -15,6 +15,7 @@ def mock_template():
         template[letter] = EnvVariable(letter, f'template-value-{letter.lower()}')
     return template
 
+
 @mock.patch('barbara.utils.find_dotenv')
 @mock.patch('barbara.utils.os')
 @mock.patch('barbara.utils.click')
