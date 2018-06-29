@@ -14,6 +14,7 @@ from .writers import Writer
 @click.option('-s', '--skip-existing', default=True, type=click.BOOL, help='Skip over any keys which already exist in the destination file')
 @click.option('-d', '--destination', default='', type=str, help='Destination for serialized environment variables')
 @click.option('-t', '--template', default='.env.yml', type=click.File(), help='Source for environment and default values')
+@click.option('--ni', '--noinput', default=False, type=click.BOOL, help='Skip prompts and use presets verbatim. Useful for CI environments.')
 @click.option('-v', '--version', is_flag=True, callback=print_version, expose_value=False, is_eager=True, help='Print version and exit.')
 def barbara_develop(skip_existing, destination, template):
     """Development mode which prompts for user input"""
