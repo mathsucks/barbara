@@ -11,13 +11,13 @@ from .variables import EnvVariable
 
 
 #: Default name to use for new files when none are discovered or given
-DEFAULT_ENV_FILENAME = '.env'
+DEFAULT_ENV_FILENAME = ".env"
 
 
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
-    click.echo(f'Barbara v{__version__}')
+    click.echo(f"Barbara v{__version__}")
     ctx.exit()
 
 
@@ -33,17 +33,17 @@ def confirm_target_file(target_file: str = None) -> bool:
     target_file = target_file or find_dotenv() or DEFAULT_ENV_FILENAME
 
     if os.path.exists(target_file):
-        return click.prompt('Destination file', default=target_file)
-    elif click.confirm(f'{target_file} does not exist. Create it?'):
+        return click.prompt("Destination file", default=target_file)
+    elif click.confirm(f"{target_file} does not exist. Create it?"):
         return create_target_file(target_file)
     else:
-        click.echo('Cannot continue without target file', color='R')
+        click.echo("Cannot continue without target file", color="R")
         sys.exit(1)
 
 
 def create_target_file(target_file: str = None) -> bool:
     """Creates an empty file at the target."""
-    click.open_file(target_file, 'w').close()
+    click.open_file(target_file, "w").close()
     return target_file
 
 
@@ -53,24 +53,29 @@ def key_list_generator(items: list, prefix: str) -> AsyncIterable[str]:
         if isinstance(item, dict):
             for segment, segment_list in item.items():
                 for segment_item in key_list_generator(segment_list, segment):
-                    yield f'{prefix}/{segment_item}'
+                    yield f"{prefix}/{segment_item}"
         else:
-            yield f'{prefix}/{item}'
+            yield f"{prefix}/{item}"
 
 
 def find_most_specific_match(target: str, search_path: str, choices: list) -> str:
     """Locate the most accurate match of target in choices, removing path segments until a suitable match is found"""
+
     def exact_match(choice_path, search_path, target):
-        choice_path_size = len(choice_path.split('/'))
-        target_path_size = len(search_path.split('/')) + 1
-        return choice_path_size == target_path_size and choice_path.startswith(search_path) and choice.endswith(target)
+        choice_path_size = len(choice_path.split("/"))
+        target_path_size = len(search_path.split("/")) + 1
+        return (
+            choice_path_size == target_path_size
+            and choice_path.startswith(search_path)
+            and choice.endswith(target)
+        )
 
     current_path = search_path
     while current_path:
         for choice in reversed(sorted(choices)):
             if exact_match(choice, current_path, target):
                 return choice
-        current_path = '/'.join(current_path.split('/')[:-1])
+        current_path = "/".join(current_path.split("/")[:-1])
     else:
         raise KeyError(f'Search path "{search_path}" was not matched in choices')
 
@@ -82,14 +87,19 @@ def prompt_user_for_value(env_variable) -> str:
     a formatted string.
     """
     try:
-        click.echo(f'{env_variable.name} ({env_variable.template}):')
-        context = {prompt.name: prompt_user_for_value(prompt) for prompt in env_variable.subvariables}
+        click.echo(f"{env_variable.name} ({env_variable.template}):")
+        context = {
+            prompt.name: prompt_user_for_value(prompt)
+            for prompt in env_variable.subvariables
+        }
         return env_variable.template.format(**context)
     except AttributeError:
         return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
-def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
+def merge_with_presets(
+    existing: OrderedDict, template: OrderedDict, skip_existing: bool
+) -> OrderedDict:
     """Merge two ordered dicts and uses the presets for values along the way
 
     If skipping existing keys, only newly discovered keys will be added. Once a key exists, the existing
@@ -107,12 +117,16 @@ def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existi
         if isinstance(existing_value, EnvVariable):
             merged[key] = existing_value.preset
         else:
-            merged[key] = existing_value.template.format(**{k: v for k, v in existing_value.subvariables})
+            merged[key] = existing_value.template.format(
+                **{k: v for k, v in existing_value.subvariables}
+            )
 
     return OrderedDict(sorted(merged.items()))
 
 
-def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
+def merge_with_prompts(
+    existing: OrderedDict, template: OrderedDict, skip_existing: bool
+) -> OrderedDict:
     """Merge two ordered dicts and prompts the user for values along the way
 
     If skipping existing keys, only newly discovered keys will be prompted for. Once a key exists, the existing
@@ -127,7 +141,11 @@ def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existi
     keys = template_keys.difference(existing_keys) if skip_existing else template_keys
 
     for key in sorted(keys):
-        preset = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
+        preset = (
+            EnvVariable(key, existing.get(key))
+            if key in existing
+            else template.get(key)
+        )
         merged[key] = prompt_user_for_value(preset)
 
     return OrderedDict(sorted(merged.items()))
