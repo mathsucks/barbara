@@ -1,1 +1,3 @@
-__version__ = "0.9.4"
+import poetry_version
+
+__version__ = poetry_version.extract(source_file=__file__)

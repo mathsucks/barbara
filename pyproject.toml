@@ -1,43 +1,80 @@
 [tool.poetry]
 name = "barbara"
-version = "0.1.1"
+version = "0.9.5"
 description = "Environment variable management"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "GPL-3.0"
-classifiers=[
-    'Development Status :: 4 - Beta',
-    'Environment :: Console',
-    'Intended Audience :: Developers',
-    'Intended Audience :: System Administrators',
-    'Operating System :: MacOS',
-    'Operating System :: POSIX :: Linux',
-    'Operating System :: Unix',
-    'Topic :: Software Development',
-    'Topic :: System',
-    'Topic :: Terminals',
+readme = "README.rst"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Unix",
+    "Topic :: Software Development",
+    "Topic :: System",
+    "Topic :: Terminals",
 ]
+packages = [
+    { include = "barbara" },
+]
+
+[tool.black]
+line-length = 120
+target-version = ['py36', 'py37']
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | _build
+  | buck-out
+  | build
+  | dist
+  | setup.py$
+)/
+'''
 
 [tool.poetry.dependencies]
 python = "^3.6"
 click = "^7.0"
-boto3 = "=1.7.48"
+boto3 = "==1.7.48"
 pyyaml = "^5.1"
 python-dotenv = "^0.10.1"
+poetry-version = "^0.1.3"
+poetry-setup = "^0.3.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.4"
 pytest-cov = "^2.6"
-isort = "^4.3"
+isort = { version = "^4.3", extras = [ "pyproject" ] }
 flake8 = "^3.7"
 flake8-bugbear = "^19.3"
 flake8-mypy = "^17.8"
 flake8-polyfill = "^1.0"
-black = "=19.3b0"
+black = "==19.3b0"
 poetry-setup = "^0.3.6"
+pre-commit = "^1.15"
+lockfile = "^0.12.2"
+dephell = "^0.3.1"
 
 [tool.poetry.scripts]
 barb = "barbara.cli:barbara_develop"
 barb-deploy = "barbara.cli:barbara_deploy"
+
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+skip = "setup.py"
+use_parentheses = true
+verbose = true
 
 [build-system]
 requires = ["poetry>=0.12"]
