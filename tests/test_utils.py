@@ -3,18 +3,13 @@ from unittest import mock
 import pytest
 
 from barbara import utils
-from barbara.variables import EnvVariable
-from barbara.variables import EnvVariableTemplate
+from barbara.variables import EnvVariable, EnvVariableTemplate
 
 
 @pytest.fixture()
 def mock_template():
     template = {
-        "A": EnvVariableTemplate(
-            "A",
-            "{part1}-{part2}",
-            [EnvVariable("part1", "A1"), EnvVariable("part2", "A2")],
-        )
+        "A": EnvVariableTemplate("A", "{part1}-{part2}", [EnvVariable("part1", "A1"), EnvVariable("part2", "A2")])
     }
     for letter in "BC":
         template[letter] = EnvVariable(letter, f"template-value-{letter.lower()}")
@@ -24,9 +19,7 @@ def mock_template():
 @mock.patch("barbara.utils.find_dotenv")
 @mock.patch("barbara.utils.os")
 @mock.patch("barbara.utils.click")
-def test_confirm_target_default_create_confirmed(
-    patched_click, patched_os, patched_find
-):
+def test_confirm_target_default_create_confirmed(patched_click, patched_os, patched_find):
     """Should match confirmation of creation of default target file"""
     patched_find.return_value = False
     patched_os.path.exists.return_value = False
@@ -41,15 +34,13 @@ def test_confirm_target_default_create_confirmed(
 @mock.patch("barbara.utils.find_dotenv")
 @mock.patch("barbara.utils.os")
 @mock.patch("barbara.utils.click")
-def test_confirm_target_default_create_rejected(
-    patched_click, patched_os, patched_find
-):
+def test_confirm_target_default_create_rejected(patched_click, patched_os, patched_find):
     """Should match rejection of creating default target file"""
     patched_find.return_value = False
     patched_os.path.exists.return_value = False
     patched_click.confirm.return_value = False
 
-    with pytest.raises(SystemExit, message=1):
+    with pytest.raises(SystemExit, match=r"1"):
         assert utils.confirm_target_file()
 
     patched_os.path.exists.assert_called_once_with(utils.DEFAULT_ENV_FILENAME)
@@ -120,10 +111,7 @@ def test_merge_with_prompts_matching_with_skip(patched_get, mock_template):
     assert merged["C"] == "new-value"
 
 
-@mock.patch(
-    "barbara.utils.prompt_user_for_value",
-    side_effect=["new-value-a", "new-value-b", "new-value-c"],
-)
+@mock.patch("barbara.utils.prompt_user_for_value", side_effect=["new-value-a", "new-value-b", "new-value-c"])
 def test_merge_with_prompts_matching_without_skip(patched_get, mock_template):
     """Should merge two ordered dictionaries with matching keys and not prompt for any keys"""
     existing = {"A": "existing-value-a", "B": "existing-value-b"}
@@ -139,17 +127,13 @@ def test_prompt_user_for_value(patched_click):
     patched_click.prompt.return_value = "user-response"
     result = utils.prompt_user_for_value(EnvVariable("test-key", "test-default"))
     assert result == "user-response"
-    patched_click.prompt.assert_called_once_with(
-        "test-key", default="test-default", type=str
-    )
+    patched_click.prompt.assert_called_once_with("test-key", default="test-default", type=str)
 
 
 @mock.patch("barbara.utils.click")
 def test_prompt_user_for_value_with_subvariables(patched_click):
     """Should request user response for each found variable and replace in template"""
     patched_click.prompt.side_effect = ["b", "d"]
-    templated_var = EnvVariableTemplate(
-        "test", "{a}{c}", [EnvVariable("a", "b"), EnvVariable("c", "d")]
-    )
+    templated_var = EnvVariableTemplate("test", "{a}{c}", [EnvVariable("a", "b"), EnvVariable("c", "d")])
     result = utils.prompt_user_for_value(templated_var)
     assert result == "bd"

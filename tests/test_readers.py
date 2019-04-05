@@ -1,8 +1,8 @@
 from unittest import mock
 
 import pytest
-import yaml
 
+import yaml
 from barbara import readers
 
 
@@ -78,7 +78,7 @@ class TestEnvTemplateReader(TestEnvReader):
         "template,sub_name,sub_default",
         [
             ("[test]", "test", None),
-            ("\[[test]\]", "test", None),
+            (r"\[[test]\]", "test", None),
             ("[test:tset]", "test", "tset"),
             ("[test:[tset:test]]", "tset", "test"),
             ("http://[username:user]:password@host.com/path", "username", "user"),
@@ -96,10 +96,7 @@ class TestSSMReader:
     def test_read_from_ssm(self, patched_boto3):
         """Should retrieve deployment values from AWS SSM."""
         value_formatter = lambda value: {"Parameter": {"Value": value}}  # noqa
-        patched_boto3.client().get_parameter.side_effect = [
-            value_formatter("value"),
-            value_formatter("pants"),
-        ]
+        patched_boto3.client().get_parameter.side_effect = [value_formatter("value"), value_formatter("pants")]
 
         r = readers.SSMReader(["/prefix/key", "/prefix/derp"])
         values = r.read()
@@ -187,12 +184,11 @@ class TestYAMLConfigReader:
           subvariables:
             subvar1: subvalue1
             subvar2: subvalue2
-        """
+        """,
+            Loader=yaml.SafeLoader,
         )
 
-        subvars = list(
-            readers.YAMLConfigReader.find_subvariables(p["ENVIRONMENT_NAME"])
-        )
+        subvars = list(readers.YAMLConfigReader.find_subvariables(p["ENVIRONMENT_NAME"]))
         assert subvars[0].name == "subvar1"
         assert subvars[0].preset == "subvalue1"
         assert subvars[1].name == "subvar2"
