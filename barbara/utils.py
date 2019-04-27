@@ -1,24 +1,16 @@
-from collections import OrderedDict
 import os
 import sys
+from collections import OrderedDict
 from typing import AsyncIterable
 
 import click
+
 from dotenv import find_dotenv
 
-from . import __version__
 from .variables import EnvVariable
-
 
 #: Default name to use for new files when none are discovered or given
 DEFAULT_ENV_FILENAME = ".env"
-
-
-def print_version(ctx, param, value):
-    if not value or ctx.resilient_parsing:
-        return
-    click.echo(f"Barbara v{__version__}")
-    ctx.exit()
 
 
 def confirm_target_file(target_file: str = None) -> bool:
@@ -64,11 +56,7 @@ def find_most_specific_match(target: str, search_path: str, choices: list) -> st
     def exact_match(choice_path, search_path, target):
         choice_path_size = len(choice_path.split("/"))
         target_path_size = len(search_path.split("/")) + 1
-        return (
-            choice_path_size == target_path_size
-            and choice_path.startswith(search_path)
-            and choice.endswith(target)
-        )
+        return choice_path_size == target_path_size and choice_path.startswith(search_path) and choice.endswith(target)
 
     current_path = search_path
     while current_path:
@@ -88,18 +76,13 @@ def prompt_user_for_value(env_variable) -> str:
     """
     try:
         click.echo(f"{env_variable.name} ({env_variable.template}):")
-        context = {
-            prompt.name: prompt_user_for_value(prompt)
-            for prompt in env_variable.subvariables
-        }
+        context = {prompt.name: prompt_user_for_value(prompt) for prompt in env_variable.subvariables}
         return env_variable.template.format(**context)
     except AttributeError:
         return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
-def merge_with_presets(
-    existing: OrderedDict, template: OrderedDict, skip_existing: bool
-) -> OrderedDict:
+def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
     """Merge two ordered dicts and uses the presets for values along the way
 
     If skipping existing keys, only newly discovered keys will be added. Once a key exists, the existing
@@ -117,16 +100,12 @@ def merge_with_presets(
         if isinstance(existing_value, EnvVariable):
             merged[key] = existing_value.preset
         else:
-            merged[key] = existing_value.template.format(
-                **{k: v for k, v in existing_value.subvariables}
-            )
+            merged[key] = existing_value.template.format(**{k: v for k, v in existing_value.subvariables})
 
     return OrderedDict(sorted(merged.items()))
 
 
-def merge_with_prompts(
-    existing: OrderedDict, template: OrderedDict, skip_existing: bool
-) -> OrderedDict:
+def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
     """Merge two ordered dicts and prompts the user for values along the way
 
     If skipping existing keys, only newly discovered keys will be prompted for. Once a key exists, the existing
@@ -141,11 +120,7 @@ def merge_with_prompts(
     keys = template_keys.difference(existing_keys) if skip_existing else template_keys
 
     for key in sorted(keys):
-        preset = (
-            EnvVariable(key, existing.get(key))
-            if key in existing
-            else template.get(key)
-        )
+        preset = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
         merged[key] = prompt_user_for_value(preset)
 
     return OrderedDict(sorted(merged.items()))

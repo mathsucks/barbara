@@ -49,7 +49,7 @@ python-dotenv = "==0.*,>=0.10.1"
 poetry-version = "==0.*,>=0.1.3"
 
 [tool.poetry.dev-dependencies]
-isort = {version = "^4.3",extras = ["pyproject"]}
+isort = "==4.*,>=4.3.0"
 pytest = "==4.*,>=4.4.0"
 pytest-cov = "==2.*,>=2.6.0"
 flake8 = "==3.*,>=3.7.0"
@@ -60,7 +60,10 @@ black = "==19.3b0"
 poetry-setup = "==0.*,>=0.3.6"
 pre-commit = "==1.*,>=1.15.0"
 lockfile = "==0.*,>=0.12.2"
-dephell = {version = "^0.5.8",extras = ["full"]}
+dephell = "==0.*,>=0.5.8"
+keyring = "==19.*,>=19.0.0"
+"isort[pyproject]" = "==4.*,>=4.3.0"
+"dephell[full]" = "==0.*,>=0.5.8"
 
 [tool.poetry.scripts]
 barb = "barbara.cli:barbara_develop"
