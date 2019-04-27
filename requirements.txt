@@ -2,7 +2,7 @@
 black==19.3b0
 boto3==1.7.48
 click==7.*,>=7.0.0
-dephell==0.*,>=0.3.1
+dephell[full]==0.*,>=0.5.8
 flake8==3.*,>=3.7.0
 flake8-bugbear==19.*,>=19.3.0
 flake8-mypy==17.*,>=17.8.0
