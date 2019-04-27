@@ -47,14 +47,12 @@ setup(
     ],
     extras_require={
         'dev': [
-            'black==19.3b0', 'dephell==0.*,>=0.5.8',
-            'dephell[full]==0.*,>=0.5.8', 'flake8==3.*,>=3.7.0',
-            'flake8-bugbear==19.*,>=19.3.0', 'flake8-mypy==17.*,>=17.8.0',
-            'flake8-polyfill==1.*,>=1.0.0', 'isort==4.*,>=4.3.0',
-            'isort[pyproject]==4.*,>=4.3.0', 'keyring==19.*,>=19.0.0',
-            'lockfile==0.*,>=0.12.2', 'poetry-setup==0.*,>=0.3.6',
-            'pre-commit==1.*,>=1.15.0', 'pytest==4.*,>=4.4.0',
-            'pytest-cov==2.*,>=2.6.0'
+            'black==19.3b0', 'dephell[full]==0.*,>=0.5.8',
+            'flake8==3.*,>=3.7.0', 'flake8-bugbear==19.*,>=19.3.0',
+            'flake8-mypy==17.*,>=17.8.0', 'flake8-polyfill==1.*,>=1.0.0',
+            'isort[pyproject]==4.*,>=4.3.0', 'lockfile==0.*,>=0.12.2',
+            'poetry-setup==0.*,>=0.3.6', 'pre-commit==1.*,>=1.15.0',
+            'pytest==4.*,>=4.4.0', 'pytest-cov==2.*,>=2.6.0'
         ]
     },
 )

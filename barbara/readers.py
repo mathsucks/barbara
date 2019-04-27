@@ -1,21 +1,16 @@
+import re
 from collections import OrderedDict
 from fnmatch import fnmatch
 from functools import partial
-import re
-from typing import Generator
-from typing import List
-from typing import TextIO
-from typing import Type
-from typing import Union
+from typing import Generator, List, TextIO, Type, Union
 
 import boto3
-from dotenv import dotenv_values
-import yaml
 
-from .utils import find_most_specific_match
-from .utils import key_list_generator
-from .variables import EnvVariable
-from .variables import EnvVariableTemplate
+import yaml
+from dotenv import dotenv_values
+
+from .utils import find_most_specific_match, key_list_generator
+from .variables import EnvVariable, EnvVariableTemplate
 
 
 def guess_reader_by_file_extension(file_or_name: Union[str, TextIO]) -> Type:
@@ -62,9 +57,7 @@ class EnvTemplateReader(EnvReader):
         for key, preset in environ.items():
             subvariables = list(self.find_subvariables(preset))
             if subvariables:
-                environ[key] = EnvVariableTemplate(
-                    key, self._get_string_template(preset), subvariables
-                )
+                environ[key] = EnvVariableTemplate(key, self._get_string_template(preset), subvariables)
             else:
                 environ[key] = EnvVariable(key, preset)
         return environ
@@ -77,9 +70,7 @@ class YAMLConfigReader:
         self.source = source
 
     @staticmethod
-    def find_subvariables(
-        preset: EnvVariableTemplate
-    ) -> Generator[EnvVariable, None, None]:
+    def find_subvariables(preset: EnvVariableTemplate) -> Generator[EnvVariable, None, None]:
         try:
             for subvar_name, subvar_preset in preset["subvariables"].items():
                 yield EnvVariable(subvar_name, subvar_preset)
@@ -91,16 +82,14 @@ class YAMLConfigReader:
         return preset["template"]
 
     def _read(self) -> OrderedDict:
-        return yaml.load(self.source.read())
+        return yaml.safe_load(self.source.read())
 
     def read(self) -> OrderedDict:
         environ = self._read()["environment"]
         for key, preset in environ.items():
             subvariables = list(self.find_subvariables(preset))
             if subvariables:
-                environ[key] = EnvVariableTemplate(
-                    key, self._get_string_template(preset), subvariables
-                )
+                environ[key] = EnvVariableTemplate(key, self._get_string_template(preset), subvariables)
             else:
                 environ[key] = EnvVariable(key, preset)
         return environ
@@ -147,13 +136,8 @@ class YAMLConfigReader:
         yaml_variables = yaml_config["environment"]
         yaml_overrides = yaml_config["deployments"]
 
-        overrides = list(
-            key_list_generator(yaml_overrides, f'/{yaml_config["project"]}')
-        )
-        return [
-            find_most_specific_match(v, resource_path, overrides)
-            for v in yaml_variables.keys()
-        ]
+        overrides = list(key_list_generator(yaml_overrides, f'/{yaml_config["project"]}'))
+        return [find_most_specific_match(v, resource_path, overrides) for v in yaml_variables.keys()]
 
 
 class SSMReader:
