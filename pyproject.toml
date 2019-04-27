@@ -41,31 +41,41 @@ exclude = '''
 '''
 
 [tool.poetry.dependencies]
-python = "^3.6"
-click = "^7.0"
+python = "==3.*,>=3.6.0"
+click = "==7.*,>=7.0.0"
 boto3 = "==1.7.48"
-pyyaml = "^5.1"
-python-dotenv = "^0.10.1"
-poetry-version = "^0.1.3"
-poetry-setup = "^0.3.6"
+pyyaml = "==5.*,>=5.1.0"
+python-dotenv = "==0.*,>=0.10.1"
+poetry-version = "==0.*,>=0.1.3"
 
 [tool.poetry.dev-dependencies]
-pytest = "^4.4"
-pytest-cov = "^2.6"
-isort = { version = "^4.3", extras = [ "pyproject" ] }
-flake8 = "^3.7"
-flake8-bugbear = "^19.3"
-flake8-mypy = "^17.8"
-flake8-polyfill = "^1.0"
+pytest = "==4.*,>=4.4.0"
+pytest-cov = "==2.*,>=2.6.0"
+isort = "==4.*,>=4.3.0"
+flake8 = "==3.*,>=3.7.0"
+flake8-bugbear = "==19.*,>=19.3.0"
+flake8-mypy = "==17.*,>=17.8.0"
+flake8-polyfill = "==1.*,>=1.0.0"
 black = "==19.3b0"
-poetry-setup = "^0.3.6"
-pre-commit = "^1.15"
-lockfile = "^0.12.2"
-dephell = "^0.3.1"
+poetry-setup = "==0.*,>=0.3.6"
+pre-commit = "==1.*,>=1.15.0"
+lockfile = "==0.*,>=0.12.2"
+dephell = "==0.*,>=0.5.8"
+"isort[pyproject]" = "==4.*,>=4.3.0"
+"dephell[full]" = "==0.*,>=0.5.8"
 
 [tool.poetry.scripts]
 barb = "barbara.cli:barbara_develop"
 barb-deploy = "barbara.cli:barbara_deploy"
+
+[tool.dephell.main]
+# read from poetry format
+from = {format = "poetry", path = "pyproject.toml"}
+# and convert into setup.py
+to = {format = "setuppy", path = "setup.py"}
+
+# explicitly specify your versioning scheme to let your users know what they can expect
+versioning = "semver"
 
 [tool.isort]
 force_grid_wrap = 0
