@@ -19,7 +19,7 @@ with open(os.path.join(here, 'README.rst'), 'rb') as stream:
 setup(
     long_description=readme,
     name='barbara',
-    version='0.10.0',
+    version='0.10.1',
     description='Environment variable management',
     python_requires='==3.*,>=3.6.0',
     author='Matthew de Verteuil',
