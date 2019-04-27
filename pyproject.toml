@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "barbara"
-version = "0.10.2"
+version = "0.11.0"
 description = "Environment variable management"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "GPL-3.0"
