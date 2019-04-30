@@ -9,6 +9,6 @@ python:
   - "nightly"  # nightly build
 install:
   - "pip install tox-travis poetry"
-  - "poetry install --dev"
+  - "poetry install"
 script:
   - "py.test"
