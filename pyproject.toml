@@ -50,7 +50,7 @@ pyyaml = "==5.*,>=5.1.0"
 
 [tool.poetry.dev-dependencies]
 black = "==19.3b0"
-dephell = { version = "==0.*,>=0.5.8", extras = [ "full" ] }
+dephell = { version = "==0.*", extras = [ "full" ] }
 flake8 = "==3.*,>=3.7.0"
 flake8-bugbear = "==19.*,>=19.3.0"
 flake8-mypy = "==17.*,>=17.8.0"
