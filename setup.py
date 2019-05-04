@@ -19,14 +19,14 @@ with open(os.path.join(here, 'README.rst'), 'rb') as stream:
 setup(
     long_description=readme,
     name='barbara',
-    version='0.11.0',
+    version='1.0.0',
     description='Environment variable management',
     python_requires='==3.*,>=3.6.0',
     author='Matthew de Verteuil',
     author_email='onceuponajooks@gmail.com',
     license='GPL-3.0',
     classifiers=[
-        'Development Status :: 4 - Beta', 'Environment :: Console',
+        'Development Status :: 5 - Production/Stable', 'Environment :: Console',
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'Operating System :: MacOS', 'Operating System :: POSIX :: Linux',
@@ -42,7 +42,7 @@ setup(
     packages=['barbara'],
     package_data={},
     install_requires=[
-        'boto3==1.7.48', 'click==7.*,>=7.0.0', 'poetry-version==0.*,>=0.1.3',
+        'click==7.*,>=7.0.0', 'poetry-version==0.*,>=0.1.3',
         'python-dotenv==0.*,>=0.10.1', 'pyyaml==5.*,>=5.1.0'
     ],
     extras_require={
@@ -53,6 +53,7 @@ setup(
             'isort[pyproject]==4.*,>=4.3.0', 'lockfile==0.*,>=0.12.2',
             'poetry-setup==0.*,>=0.3.6', 'pre-commit==1.*,>=1.15.0',
             'pytest==4.*,>=4.4.0', 'pytest-cov==2.*,>=2.6.0'
-        ]
+        ],
+        'ssm': ['boto3==1.7.48']
     },
 )

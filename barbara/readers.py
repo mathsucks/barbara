@@ -4,13 +4,16 @@ from fnmatch import fnmatch
 from functools import partial
 from typing import Generator, List, TextIO, Type, Union
 
-import boto3
-
 import yaml
 from dotenv import dotenv_values
 
 from .utils import find_most_specific_match, key_list_generator
 from .variables import EnvVariable, EnvVariableTemplate
+
+try:
+    import boto3
+except ImportError:
+    boto3 = None
 
 
 def guess_reader_by_file_extension(file_or_name: Union[str, TextIO]) -> Type:
@@ -144,6 +147,8 @@ class SSMReader:
     """Reads environment variables from AWS SSM storage into an ordered dictionary"""
 
     def __init__(self, key_list: List[str]) -> None:
+        if boto3 is None:
+            raise SystemError("Install barbara with SSM functionality to use deploy mode: pip install 'barbara[ssm]'.")
         self.key_list = key_list
 
     def read(self) -> OrderedDict:

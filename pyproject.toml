@@ -1,12 +1,12 @@
 [tool.poetry]
 name = "barbara"
-version = "0.11.0"
+version = "1.0.0"
 description = "Environment variable management"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "GPL-3.0"
 readme = "README.rst"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 5 - Production/Stable",
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
@@ -42,7 +42,7 @@ exclude = '''
 
 [tool.poetry.dependencies]
 python = "==3.*,>=3.6.0"
-boto3 = "==1.9.141"
+boto3 = { version = "==1.9.141", optional = "true" }
 click = "==7.*,>=7.0.0"
 poetry-version = "==0.*,>=0.1.3"
 python-dotenv = "==0.*,>=0.10.1"
@@ -61,6 +61,9 @@ poetry-setup = "==0.*,>=0.3.6"
 pre-commit = "==1.*,>=1.15.0"
 pytest = "==4.*,>=4.4.0"
 pytest-cov = "==2.*"
+
+[tool.poetry.extras]
+ssm = ["boto3"]
 
 [tool.poetry.scripts]
 barb = "barbara.cli:barbara_develop"
