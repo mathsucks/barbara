@@ -1,5 +1,3 @@
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmverteuil%2Fbarbara.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmverteuil%2Fbarbara?ref=badge_shield)
-
 barbara
 =======
 
@@ -191,7 +189,3 @@ Principle <https://en.wikipedia.org/wiki/Liskov_substitution_principle>`__ and i
 computer science and software engineering. Barbara is one of the Newton's metaphorical giants that enables us
 to see further. I humbly dedicate my project to her and her contributions and offer this project to its
 consumers with a license befitting that dedication.
-
-
-## License
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fmverteuil%2Fbarbara.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fmverteuil%2Fbarbara?ref=badge_large)
