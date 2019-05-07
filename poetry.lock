@@ -101,7 +101,7 @@ toml = ">=0.9.4"
 category = "main"
 description = "The AWS SDK for Python"
 name = "boto3"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.9.142"
 
@@ -114,7 +114,7 @@ s3transfer = ">=0.2.0,<0.3.0"
 category = "main"
 description = "Low-level, data-driven core of boto 3."
 name = "botocore"
-optional = true
+optional = false
 python-versions = "*"
 version = "1.12.142"
 
@@ -509,7 +509,7 @@ MarkupSafe = ">=0.23"
 category = "main"
 description = "JSON Matching Expressions"
 name = "jmespath"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.9.4"
 
@@ -724,7 +724,7 @@ description = "A framework for managing and maintaining multi-language pre-commi
 name = "pre-commit"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.15.2"
+version = "1.16.0"
 
 [package.dependencies]
 "aspy.yaml" = "*"
@@ -838,7 +838,7 @@ category = "main"
 description = "Extensions to the standard Python datetime module"
 marker = "python_version >= \"2.7\""
 name = "python-dateutil"
-optional = true
+optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "2.8.0"
 
@@ -890,7 +890,7 @@ requests = ">=2.0.1,<3.0.0"
 category = "main"
 description = "An Amazon S3 Transfer Manager"
 name = "s3transfer"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.2.0"
 
@@ -1022,7 +1022,7 @@ version = "0.4.0"
 ssm = ["boto3"]
 
 [metadata]
-content-hash = "ed940cf428208b5e53895e85080ab1165c6c5780f7be61dd01e3172cb3ca1cb6"
+content-hash = "ea69f8eb71c0f66b9347402e16515a7fdbf3d472f2d7de4740a7fe11619e1439"
 python-versions = "==3.*,>=3.6.0"
 
 [metadata.hashes]
@@ -1092,7 +1092,7 @@ pluggy = ["19ecf9ce9db2fce065a7a0586e07cfb4ac8614fe96edf628a264b1c70116cf8f", "8
 poetry = ["88a7e18e72285bede8cceb94b880b66be826a642272205eae2aecadf252d7fc5", "8bac6a9118873b43e6bf420e85b5fbb52fdce7822368c6b466d1a598507b38da"]
 poetry-setup = ["18204efc69bc3a79d19c905142d986e76d9a9dd18f4480f336dc6a7aad6a43b3"]
 poetry-version = ["75d3f7ae3ede0539529a81170e77441bc753827f5a1de20ec8174877471d8eaf", "d0edca96a5798e668fb81cdc5941975d1cb0b6020df4b95464b2939605654617"]
-pre-commit = ["2576a2776098f3902ef9540a84696e8e06bf18a337ce43a6a889e7fa5d26c4c5", "82f2f2d657d7f9280de9f927ae56886d60b9ef7f3714eae92d12713cd9cb9e11"]
+pre-commit = ["3fac7032a23c37d3dd9ec15f4c7b8342145e1ae943532c01cf1497277157aa59", "b05c26279a6c36d2043ded6f9f7a1a0af8d4d71ed0bf1274afc5fbd3ca3e0ec7"]
 ptyprocess = ["923f299cc5ad920c68f2bc0bc98b75b9f838b93b599941a6b63ddbc2476394c0", "d7cc528d76e76342423ca640335bd3633420dc1366f258cb31d05e865ef5ca1f"]
 py = ["64f65755aee5b381cea27766a3a147c3f15b9b6b9ac88676de66ba2ae36793fa", "dc639b046a6e2cff5bbe40194ad65936d6ba360b52b3c3fe1d08a82dd50b5e53"]
 pycodestyle = ["95a2219d12372f05704562a14ec30bc76b05a5b297b21a5dfe3f6fac3491ae56", "e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"]
