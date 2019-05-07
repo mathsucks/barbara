@@ -101,12 +101,12 @@ toml = ">=0.9.4"
 category = "main"
 description = "The AWS SDK for Python"
 name = "boto3"
-optional = false
+optional = true
 python-versions = "*"
-version = "1.9.142"
+version = "1.9.143"
 
 [package.dependencies]
-botocore = ">=1.12.142,<1.13.0"
+botocore = ">=1.12.143,<1.13.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.2.0,<0.3.0"
 
@@ -114,9 +114,9 @@ s3transfer = ">=0.2.0,<0.3.0"
 category = "main"
 description = "Low-level, data-driven core of boto 3."
 name = "botocore"
-optional = false
+optional = true
 python-versions = "*"
-version = "1.12.142"
+version = "1.12.143"
 
 [package.dependencies]
 docutils = ">=0.10"
@@ -509,7 +509,7 @@ MarkupSafe = ">=0.23"
 category = "main"
 description = "JSON Matching Expressions"
 name = "jmespath"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.9.4"
 
@@ -838,7 +838,7 @@ category = "main"
 description = "Extensions to the standard Python datetime module"
 marker = "python_version >= \"2.7\""
 name = "python-dateutil"
-optional = false
+optional = true
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "2.8.0"
 
@@ -890,7 +890,7 @@ requests = ">=2.0.1,<3.0.0"
 category = "main"
 description = "An Amazon S3 Transfer Manager"
 name = "s3transfer"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.2.0"
 
@@ -1022,7 +1022,7 @@ version = "0.4.0"
 ssm = ["boto3"]
 
 [metadata]
-content-hash = "ea69f8eb71c0f66b9347402e16515a7fdbf3d472f2d7de4740a7fe11619e1439"
+content-hash = "50917275434ffb9c85969cbe7f60c84668faffee3c46c649290ae0472b58f913"
 python-versions = "==3.*,>=3.6.0"
 
 [metadata.hashes]
@@ -1035,8 +1035,8 @@ attr = ["0b1aaddb85bd9e9c4bd75092f4440d6616ff40b0df0437f00771871670f7c9fd", "909
 attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
 autopep8 = ["4d8eec30cc81bc5617dbf1218201d770dc35629363547f17577c61683ccfb3ee"]
 black = ["09a9dcb7c46ed496a9850b76e4e825d6049ecd38b611f1224857a79bd985a8cf", "68950ffd4d9169716bcb8719a56c07a2f4485354fec061cdd5910aa07369731c"]
-boto3 = ["aee5d24bec598b2dbdd8585865646ea4dce6f8ef6059417589de7284e80433a2", "b2327f4dc2ca0e45da59b2f4a0085a3c356a0423ba0fa4f3fad4f7919c6be2f7"]
-botocore = ["60c40f8c51d308046c737c3f74c4dcf1681e884e6dc87fa2727db2d44f8b70f7", "78b9413286c8fbcf094911584f63a81356b4539befec7be76887c6dcd66ace83"]
+boto3 = ["484650b86ea843587f484a8f9cc9629465ad805aff0ffaabf95345960168f569", "635e1864cd35d78d33fd7ce325f9baa15c93a932403953b2b4801567a791b869"]
+botocore = ["0247ad0da9fdbf4e8025b0dafb3982b945d335bcd7043518fdabe9d99f704e17", "94846e90fc4dbe91a9e70f6a24ca823b4f3acc9a4047b497266d003fe12c80ce"]
 cachecontrol = ["cef77effdf51b43178f6a2d3b787e3734f98ade253fa3187f3bb7315aaa42ff7"]
 cachy = ["b71513e5a38ce90c1280c02b7d8d6bb3fdf64666c9cc0584f2479afea097d56c", "b71e8e7ddb5b386e23e81befdfac8a93885406139b8681bedc17b3444fcb8fca"]
 cerberus = ["f5c2e048fb15ecb3c088d192164316093fcfa602a74b3386eefb2983aa7e800a"]
