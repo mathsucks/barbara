@@ -669,7 +669,7 @@ description = "plugin and hook calling mechanisms for python"
 name = "pluggy"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.9.0"
+version = "0.11.0"
 
 [[package]]
 category = "dev"
@@ -806,13 +806,13 @@ description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "4.4.1"
+version = "4.4.2"
 
 [package.dependencies]
 atomicwrites = ">=1.0"
 attrs = ">=17.4.0"
 colorama = "*"
-pluggy = ">=0.9"
+pluggy = ">=0.11"
 py = ">=1.5.0"
 setuptools = "*"
 six = ">=1.10.0"
@@ -1022,7 +1022,7 @@ version = "0.4.0"
 ssm = ["boto3"]
 
 [metadata]
-content-hash = "0f2c99276b8f3c9f1c53cc420ae88d5ef085c2aa91e03c8c4868520cdcf050b0"
+content-hash = "ba8e94074b844cea5a9c8bc070adcc404a0bd812be1d57d03f814b9b26597ab3"
 python-versions = "==3.*,>=3.6.0"
 
 [metadata.hashes]
@@ -1088,7 +1088,7 @@ packaging = ["0c98a5d0be38ed775798ece1b9727178c4469d9c3b4ada66e8e6b7849f8732af",
 pastel = ["3108af417ec0fa6d0a620e676ec4f02c839ca13e10611586e5d2174b46aa0bc3", "d1fee8079534f99f1805a044fef946d23eee6d6a7cd34292c30e6c16be9a80b9"]
 pexpect = ["2094eefdfcf37a1fdbfb9aa090862c1a4878e5c7e0e7e7088bdb511c558e5cd1", "9e2c1fd0e6ee3a49b28f95d4b33bc389c89b20af6a1255906e90ff1262ce62eb"]
 pkginfo = ["7424f2c8511c186cd5424bbf31045b77435b37a8d604990b79d4e70d741148bb", "a6d9e40ca61ad3ebd0b72fbadd4fba16e4c0e4df0428c041e01e06eb6ee71f32"]
-pluggy = ["19ecf9ce9db2fce065a7a0586e07cfb4ac8614fe96edf628a264b1c70116cf8f", "84d306a647cc805219916e62aab89caa97a33a1dd8c342e87a37f91073cd4746"]
+pluggy = ["25a1bc1d148c9a640211872b4ff859878d422bccb59c9965e04eed468a0aa180", "964cedd2b27c492fbf0b7f58b3284a09cf7f99b0f715941fb24a439b3af1bd1a"]
 poetry = ["88a7e18e72285bede8cceb94b880b66be826a642272205eae2aecadf252d7fc5", "8bac6a9118873b43e6bf420e85b5fbb52fdce7822368c6b466d1a598507b38da"]
 poetry-setup = ["18204efc69bc3a79d19c905142d986e76d9a9dd18f4480f336dc6a7aad6a43b3"]
 poetry-version = ["75d3f7ae3ede0539529a81170e77441bc753827f5a1de20ec8174877471d8eaf", "d0edca96a5798e668fb81cdc5941975d1cb0b6020df4b95464b2939605654617"]
@@ -1100,7 +1100,7 @@ pyflakes = ["17dbeb2e3f4d772725c777fabc446d5634d1038f234e77343108ce445ea69ce0", 
 pylev = ["063910098161199b81e453025653ec53556c1be7165a9b7c50be2f4d57eae1c3", "1d29a87beb45ebe1e821e7a3b10da2b6b2f4c79b43f482c2df1a1f748a6e114e"]
 pyparsing = ["1873c03321fc118f4e9746baf201ff990ceb915f433f23b395f5580d1840cb2a", "9b6323ef4ab914af344ba97510e966d64ba91055d6b9afa6b30799340e89cc03"]
 pyrsistent = ["3ca82748918eb65e2d89f222b702277099aca77e34843c5eb9d52451173970e2"]
-pytest = ["3773f4c235918987d51daf1db66d51c99fac654c81d6f2f709a046ab446d5e5d", "b7802283b70ca24d7119b32915efa7c409982f59913c1a6c0640aacf118b95f5"]
+pytest = ["136632a40451162cdfc18fe4d7ecc5d169b558a3d4bbb1603d4005308a42fd03", "62b129bf8368554ca7a942cbdb57ea26aafef46cc65bc317cdac3967e54483a3"]
 pytest-cov = ["2b097cde81a302e1047331b48cadacf23577e431b61e9c6f49a1170bbe3d3da6", "e00ea4fdde970725482f1f35630d12f074e121a23801aabf2ae154ec6bdd343a"]
 python-dateutil = ["7e6584c74aeed623791615e26efd690f29817a27c73085b78e4bad02493df2fb", "c89805f6f4d64db21ed966fda138f8a5ed7a4fdbc1a8ee329ce1b74e3c74da9e"]
 python-dotenv = ["a84569d0e00d178bc5b957f7ff208bf49287cbf61857c31c258c4a91f571527b", "c9b1ddd3cdbe75c7d462cb84674d87130f4b948f090f02c7d7144779afb99ae0"]

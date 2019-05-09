@@ -59,7 +59,7 @@ isort = { version = "==4.*", extras = [ "pyproject" ] }
 lockfile = "==0.*,>=0.12.2"
 poetry-setup = "==0.*,>=0.3.6"
 pre-commit = "==1.*"
-pytest = "==4.*,>=4.4.0"
+pytest = "==4.*"
 pytest-cov = "==2.*"
 
 [tool.poetry.extras]
