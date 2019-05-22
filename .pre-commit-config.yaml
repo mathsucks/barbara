@@ -7,11 +7,6 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: flake8
-  - repo: https://github.com/mverteuil/precommit-dephell
-    rev: master
-    hooks:
-      - id: pyproject-toml-to-requirements-txt
-      - id: pyproject-toml-to-setup-py
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v4.3.16
     hooks:
