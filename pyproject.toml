@@ -49,14 +49,6 @@ python-dotenv = "==0.*,>=0.10.1"
 pyyaml = "==5.*,>=5.1.0"
 
 [tool.poetry.dev-dependencies]
-black = "==19.3b0"
-flake8 = "==3.*,>=3.7.0"
-flake8-bugbear = "==19.*,>=19.3.0"
-flake8-mypy = "==17.*,>=17.8.0"
-flake8-polyfill = "==1.*,>=1.0.0"
-isort = { version = "==4.*", extras = [ "pyproject" ] }
-lockfile = "==0.*,>=0.12.2"
-poetry-setup = "==0.*,>=0.3.6"
 pre-commit = "==1.*"
 pytest = "==4.*"
 pytest-cov = "==2.*"
