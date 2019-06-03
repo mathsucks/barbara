@@ -7,8 +7,6 @@ from . import readers
 from .utils import confirm_target_file, create_target_file, merge_with_presets, merge_with_prompts
 from .writers import Writer
 
-__version__ = poetry_version.extract(source_file=__file__)
-
 
 @click.command()
 @click.option(
@@ -25,7 +23,7 @@ __version__ = poetry_version.extract(source_file=__file__)
 @click.option(
     "-z", "--zero-input", is_flag=True, help="Skip prompts and use presets verbatim. Useful for CI environments."
 )
-@click.version_option(__version__)
+@click.version_option(poetry_version.extract(source_file=__file__))
 def barbara_develop(skip_existing, destination, template, zero_input):
     """Development mode which prompts for user input"""
     if zero_input:
@@ -56,7 +54,7 @@ def barbara_develop(skip_existing, destination, template, zero_input):
 @click.option("-d", "--destination", default=".env", type=str, help="Destination for serialized environment variables")
 @click.option("-t", "--template", default=".env.yml", type=click.File(), help="Source for environment variable keys")
 @click.option("-p", "--search-path", required=True, type=str, help="Search path to use for SSM environment variables")
-@click.version_option(__version__)
+@click.version_option(poetry_version.extract(source_file=__file__))
 def barbara_deploy(destination, template, search_path):
     """Deploy mode which retrieves values from AWS SSM"""
     confirmed_target = destination if os.path.exists(destination) else create_target_file(destination)
