@@ -1,6 +1,11 @@
 barbara
 =======
 
+.. image:: https://img.shields.io/pypi/pyversions/barbara.svg?logo=python&logoColor=yellow&style=for-the-badge   :alt: PyPI - Python Version 
+.. image:: https://img.shields.io/pypi/dm/barbara.svg?style=for-the-badge   :alt: PyPI - Downloads
+.. image:: https://img.shields.io/pypi/l/barbara.svg?style=for-the-badge   :alt: PyPI - License
+.. image:: https://img.shields.io/pypi/v/barbara.svg?style=for-the-badge   :alt: PyPI
+
 Environment variable management
 
 Installation
