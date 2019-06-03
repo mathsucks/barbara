@@ -1,10 +1,9 @@
-barbara
-=======
+.. image:: https://repository-images.githubusercontent.com/131429006/7eb3f680-8572-11e9-8c3d-68b1476c50e8#
 
-.. image:: https://img.shields.io/pypi/pyversions/barbara.svg?logo=python&logoColor=yellow&style=for-the-badge   :alt: PyPI - Python Version 
-.. image:: https://img.shields.io/pypi/dm/barbara.svg?style=for-the-badge   :alt: PyPI - Downloads
-.. image:: https://img.shields.io/pypi/l/barbara.svg?style=for-the-badge   :alt: PyPI - License
-.. image:: https://img.shields.io/pypi/v/barbara.svg?style=for-the-badge   :alt: PyPI
+.. image:: https://img.shields.io/pypi/pyversions/barbara.svg?logo=python&logoColor=yellow&style=for-the-badge
+.. image:: https://img.shields.io/pypi/dm/barbara.svg?style=for-the-badge
+.. image:: https://img.shields.io/pypi/l/barbara.svg?style=for-the-badge
+.. image:: https://img.shields.io/pypi/v/barbara.svg?style=for-the-badge
 
 Environment variable management
 
