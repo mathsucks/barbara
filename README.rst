@@ -1,9 +1,6 @@
 .. image:: https://repository-images.githubusercontent.com/131429006/7eb3f680-8572-11e9-8c3d-68b1476c50e8#
 
-.. image:: https://img.shields.io/pypi/pyversions/barbara.svg?logo=python&logoColor=yellow&style=for-the-badge
-.. image:: https://img.shields.io/pypi/dm/barbara.svg?style=for-the-badge
-.. image:: https://img.shields.io/pypi/l/barbara.svg?style=for-the-badge
-.. image:: https://img.shields.io/pypi/v/barbara.svg?style=for-the-badge
+|python| |downloads| |license| |version|
 
 Environment variable management
 
@@ -193,3 +190,10 @@ Principle <https://en.wikipedia.org/wiki/Liskov_substitution_principle>`__ and i
 computer science and software engineering. Barbara is one of the Newton's metaphorical giants that enables us
 to see further. I humbly dedicate my project to her and her contributions and offer this project to its
 consumers with a license befitting that dedication.
+
+
+
+.. |python| image:: https://img.shields.io/pypi/pyversions/barbara.svg?logo=python&logoColor=yellow&style=for-the-badge
+.. |downloads| image:: https://img.shields.io/pypi/dm/barbara.svg?style=for-the-badge
+.. |license| image:: https://img.shields.io/pypi/l/barbara.svg?style=for-the-badge
+.. |version| image:: https://img.shields.io/pypi/v/barbara.svg?style=for-the-badge
