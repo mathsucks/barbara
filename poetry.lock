@@ -31,10 +31,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = true
 python-versions = "*"
-version = "1.10.2"
+version = "1.10.13"
 
 [package.dependencies]
-botocore = ">=1.13.2,<1.14.0"
+botocore = ">=1.13.13,<1.14.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.2.0,<0.3.0"
 
@@ -44,7 +44,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = true
 python-versions = "*"
-version = "1.13.2"
+version = "1.13.13"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -52,7 +52,7 @@ jmespath = ">=0.7.1,<1.0.0"
 
 [package.dependencies.python-dateutil]
 python = ">=2.7"
-version = ">=2.1,<3.0.0"
+version = ">=2.1,<2.8.1"
 
 [package.dependencies.urllib3]
 python = ">=3.4"
@@ -371,8 +371,8 @@ python-versions = "==3.*,>=3.6.0"
 "aspy.yaml" = ["463372c043f70160a9ec950c3f1e4c3a82db5fca01d334b6bc89c7164d744bdc", "e7c742382eff2caed61f87a39d13f99109088e5e93f04d76eb8d4b28aa143f45"]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
-boto3 = ["7fc97cb2c9cdff905e950750c8e8b23b872a84696158a28852355dc4b712ba3a", "818c56a317c176142dbf1dca3f5b4366c80460c6cc3c4efe22f0bde736571283"]
-botocore = ["8223485841ef4731a5d4943a733295ba69d0005c4ae64c468308cc07f6960d39", "f8e12dc6e536ea512f0ad25b74e7eecdf5d9e09ae92b5de236b535bee7804d5b"]
+boto3 = ["228cea7e2b3be79e5393719641854d4000826d7a7baebede903a616b505b8e17", "ad6d50dd5726a12c6442c23aabec0c7e09ef610834d9fbda010bade6888d7677"]
+botocore = ["33ee13a42ee1cc2391a3cd3ce12c84026db20cc76a5700d94fbe07a136d0c354", "d1c6f01486566521b59fd5d4f6ba0adf526ed0d1807a0c0ba6604e982d014f3d"]
 cfgv = ["32edbe09de6f4521224b87822103a8c16a614d31a894735f7a5b3bcf0eb3c37e", "3bd31385cd2bebddbba8012200aaf15aa208539f1b33973759b4d02fc2148da5"]
 click = ["2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13", "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"]
 colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
