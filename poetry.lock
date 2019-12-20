@@ -32,10 +32,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = true
 python-versions = "*"
-version = "1.10.35"
+version = "1.10.43"
 
 [package.dependencies]
-botocore = ">=1.13.35,<1.14.0"
+botocore = ">=1.13.43,<1.14.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.2.0,<0.3.0"
 
@@ -45,7 +45,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = true
 python-versions = "*"
-version = "1.13.35"
+version = "1.13.43"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -372,8 +372,8 @@ python-versions = "==3.*,>=3.6.0"
 "aspy.yaml" = ["463372c043f70160a9ec950c3f1e4c3a82db5fca01d334b6bc89c7164d744bdc", "e7c742382eff2caed61f87a39d13f99109088e5e93f04d76eb8d4b28aa143f45"]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
-boto3 = ["323a6936df64fc8637bb629a582e332610e6606fc199eae882f18b1ae705cabf", "5cad688930e22c7edf434c34747cac058ae0de394999155e07ff848feb90f53d"]
-botocore = ["592948fa0d04577610c06185f50e213ca666472c32ec22eccf21d9b505341722", "64db64cbb461a5970dcfed63a6d82729fce7850739f2322ff0fccf88e9259ecf"]
+boto3 = ["06f5fd086dc4f7a09b1d36dd15f047878198ee87db5d1f85d7621596d163e254", "40620839d08152911f0fb285fa4a91f4879ec71e0498f4d1f6e2cc30fddb3fb5"]
+botocore = ["1c73eaf96a5f35741b72c382c5a19a97259f92271e919fd76a138991157610c4", "5ac2108e44976730a514218be381cc0d83141e398fd7c55483b6ea2b181febd2"]
 cfgv = ["32edbe09de6f4521224b87822103a8c16a614d31a894735f7a5b3bcf0eb3c37e", "3bd31385cd2bebddbba8012200aaf15aa208539f1b33973759b4d02fc2148da5"]
 click = ["2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13", "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"]
 colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
