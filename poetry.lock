@@ -32,10 +32,10 @@ description = "The AWS SDK for Python"
 name = "boto3"
 optional = true
 python-versions = "*"
-version = "1.11.4"
+version = "1.11.7"
 
 [package.dependencies]
-botocore = ">=1.14.4,<1.15.0"
+botocore = ">=1.14.7,<1.15.0"
 jmespath = ">=0.7.1,<1.0.0"
 s3transfer = ">=0.3.0,<0.4.0"
 
@@ -45,7 +45,7 @@ description = "Low-level, data-driven core of boto 3."
 name = "botocore"
 optional = true
 python-versions = "*"
-version = "1.14.4"
+version = "1.14.7"
 
 [package.dependencies]
 docutils = ">=0.10,<0.16"
@@ -364,8 +364,8 @@ python-versions = "==3.*,>=3.6.0"
 "aspy.yaml" = ["463372c043f70160a9ec950c3f1e4c3a82db5fca01d334b6bc89c7164d744bdc", "e7c742382eff2caed61f87a39d13f99109088e5e93f04d76eb8d4b28aa143f45"]
 atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["69c0dbf2ed392de1cb5ec704444b08a5ef81680a61cb899dc08127123af36a79", "f0b870f674851ecbfbbbd364d6b5cbdff9dcedbc7f3f5e18a6891057f21fe399"]
-boto3 = ["589675488d3d42783098321619ddf7a8ec06dd11e9b73db19deb063cfb05eec6", "c8cc6d8d5474e46f0826ba1156356c583961c2df8c4324f4373df7a83bbce627"]
-botocore = ["91a39d0ede1676c22cf6158bbbc4f85cc3385ab9201b5190c25e3770967f94c0", "cf29118fb62513712888f2f3dd337c0933a3e253b952f0bbe6d8d4c4fd4be5be"]
+boto3 = ["5222edc5b20d5c6ab7440fc4f89f987ead05be37ff5cc5359a3b9148d9b5a51e", "bd3337cfc15613b0091fa567dc3065d94df88e5837ba1adbb1e35b91db728a66"]
+botocore = ["9a17d36ee43f1398c7db3cb29aa2216de94bcb60f058b1c645d71e72a330ddf8", "e4b82b1a7389f3d16732eb839240c9d3e42470100d5a71415ea2a0a35b911b23"]
 cfgv = ["32edbe09de6f4521224b87822103a8c16a614d31a894735f7a5b3bcf0eb3c37e", "3bd31385cd2bebddbba8012200aaf15aa208539f1b33973759b4d02fc2148da5"]
 click = ["2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13", "5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"]
 colorama = ["05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d", "f8ac84de7840f5b9c4e3347b3c1eaa50f7e49c2b07596221daec5edaabbd7c48"]
