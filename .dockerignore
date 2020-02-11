@@ -1,0 +1,6 @@
+*.egg-info
+.git
+Dockerfile
+dist
+example_templates
+tests
