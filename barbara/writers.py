@@ -17,6 +17,8 @@ class Writer:
         with click.open_file(self.target_file, "w") as f:
             f.seek(0)
             for k, v in self.environment.items():
+                # Normalize falsy values to blanks
+                v = "" if not v else v
                 f.write(f"{k}={v}\n")
 
         os.remove(f"{self.target_file}.backup")

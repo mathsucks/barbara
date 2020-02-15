@@ -4,13 +4,14 @@ from collections import OrderedDict
 from typing import AsyncIterable
 
 import click
-
 from dotenv import find_dotenv
 
 from .variables import EnvVariable
 
 #: Default name to use for new files when none are discovered or given
 DEFAULT_ENV_FILENAME = ".env"
+
+EMPTY = object()
 
 
 def confirm_target_file(target_file: str = None) -> bool:
@@ -86,13 +87,17 @@ def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existi
     """Merge two ordered dicts and uses the presets for values along the way
 
     If skipping existing keys, only newly discovered keys will be added. Once a key exists, the existing
-    value will be used as the preset, when the key doesn't exist the template preset is assigned. A template variable
-    with a missing preset is considered an error.
+    value will be used as the preset, when the key doesn't exist the template preset is assigned.
     """
-    merged = {}
+    merged = existing.copy()
 
-    for key in sorted(template.keys()):
-        if not skip_existing and existing.get(key):
+    template_keys = set(k.upper() for k in template.keys())
+    existing_keys = set(k.upper() for k in existing.keys())
+
+    keys = template_keys.difference(existing_keys) if skip_existing else template_keys
+
+    for key in sorted(keys):
+        if existing.get(key, EMPTY) is not EMPTY:
             existing_value = EnvVariable(key, existing.get(key))
         else:
             existing_value = template.get(key)
@@ -109,8 +114,7 @@ def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existi
     """Merge two ordered dicts and prompts the user for values along the way
 
     If skipping existing keys, only newly discovered keys will be prompted for. Once a key exists, the existing
-    value will be given as a preset, when the key doesn't exist the template preset is presented. A template with a
-    missing value is considered an error.
+    value will be given as a preset, when the key doesn't exist the template preset is presented.
     """
     merged = existing.copy()
 

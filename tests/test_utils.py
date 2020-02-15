@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-
 from barbara import utils
 from barbara.variables import EnvVariable, EnvVariableTemplate
 
@@ -86,8 +85,8 @@ def test_merge_with_presets_matching_with_skip(mock_template):
     """Should merge two ordered dictionaries with matching keys and use existing and presets for any keys"""
     existing = {"A": "existing-value-a", "B": "existing-value-b"}
     merged = utils.merge_with_presets(existing, mock_template, skip_existing=True)
-    assert merged["A"] == "A1-A2"
-    assert merged["B"] == "template-value-b"
+    assert merged["A"] == "existing-value-a"
+    assert merged["B"] == "existing-value-b"
     assert merged["C"] == "template-value-c"
 
 
