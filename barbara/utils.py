@@ -1,7 +1,6 @@
 import os
 import sys
 from collections import OrderedDict
-from typing import AsyncIterable
 
 import click
 from dotenv import find_dotenv
@@ -38,35 +37,6 @@ def create_target_file(target_file: str = None) -> bool:
     """Creates an empty file at the target."""
     click.open_file(target_file, "w").close()
     return target_file
-
-
-def key_list_generator(items: list, prefix: str) -> AsyncIterable[str]:
-    """Given a list of strings and/or dictionaries, recursively joins the contents into pseudo-paths."""
-    for item in items:
-        if isinstance(item, dict):
-            for segment, segment_list in item.items():
-                for segment_item in key_list_generator(segment_list, segment):
-                    yield f"{prefix}/{segment_item}"
-        else:
-            yield f"{prefix}/{item}"
-
-
-def find_most_specific_match(target: str, search_path: str, choices: list) -> str:
-    """Locate the most accurate match of target in choices, removing path segments until a suitable match is found"""
-
-    def exact_match(choice_path, search_path, target):
-        choice_path_size = len(choice_path.split("/"))
-        target_path_size = len(search_path.split("/")) + 1
-        return choice_path_size == target_path_size and choice_path.startswith(search_path) and choice.endswith(target)
-
-    current_path = search_path
-    while current_path:
-        for choice in reversed(sorted(choices)):
-            if exact_match(choice, current_path, target):
-                return choice
-        current_path = "/".join(current_path.split("/")[:-1])
-    else:
-        raise KeyError(f'Search path "{search_path}" was not matched in choices')
 
 
 def prompt_user_for_value(env_variable) -> str:

@@ -18,7 +18,7 @@ from .writers import Writer
 )
 @click.option("-d", "--destination", default="", type=str, help="Destination for serialized environment variables")
 @click.option(
-    "-t", "--template", default=".env.yml", type=click.File(), help="Source for environment and default values"
+    "-t", "--template", default="env-template.yml", type=click.File(), help="Source for environment and default values"
 )
 @click.option(
     "-z", "--zero-input", is_flag=True, help="Skip prompts and use presets verbatim. Useful for CI environments."
@@ -38,12 +38,12 @@ def barbara_develop(skip_existing, destination, template, zero_input):
 
     click.echo(f"Creating environment: {confirmed_target}")
 
-    TemplateReader = readers.guess_reader_by_file_extension(template)
+    TemplateReader = readers.get_reader(template)
     environment_template = TemplateReader(template).read()
     existing_environment = readers.EnvReader(confirmed_target).read()
     click.echo(f"Skip Existing: {skip_existing}")
 
-    environment = merge_strategy(existing_environment, environment_template, skip_existing)
+    environment = merge_strategy(existing_environment, environment_template["environment"], skip_existing)
 
     Writer(confirmed_target, environment).write()
 
@@ -51,20 +51,18 @@ def barbara_develop(skip_existing, destination, template, zero_input):
 
 
 @click.command()
-@click.option("-d", "--destination", default=".env", type=str, help="Destination for serialized environment variables")
-@click.option("-t", "--template", default=".env.yml", type=click.File(), help="Source for environment variable keys")
-@click.option("-p", "--search-path", required=True, type=str, help="Search path to use for SSM environment variables")
+@click.option(
+    "-t", "--template", default="env-template.yml", type=click.File(), help="Template for environment variables"
+)
+@click.option("-o", "--output", default=".env", type=str, help="Destination for env-file")
 @click.version_option(poetry_version.extract(source_file=__file__))
-def barbara_deploy(destination, template, search_path):
+def barbara_deploy(output, template):
     """Deploy mode which retrieves values from AWS SSM"""
-    confirmed_target = destination if os.path.exists(destination) else create_target_file(destination)
+    confirmed_target = output if os.path.exists(output) else create_target_file(output)
 
-    click.echo(f"Creating environment: {confirmed_target} (using search_path: {search_path})")
+    click.echo(f"Creating env-file: {confirmed_target}")
 
-    config_reader = readers.YAMLConfigReader(template)
-    key_list = config_reader.generate_key_list_for_resource(search_path)
-    environment = readers.SSMReader(key_list).read()
-
-    Writer(confirmed_target, environment).write()
+    config_reader = readers.YAMLTemplateReader(template)
+    Writer(confirmed_target, config_reader.read()).write()
 
     click.echo("Environment ready!")
