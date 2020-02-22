@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 import click
 import poetry_version
@@ -16,30 +17,27 @@ from .writers import Writer
     type=click.BOOL,
     help="Skip over any keys which already exist in the destination file",
 )
-@click.option("-d", "--destination", default="", type=str, help="Destination for serialized environment variables")
-@click.option(
-    "-t", "--template", default="env-template.yml", type=click.File(), help="Source for environment and default values"
-)
+@click.option("-o", "--output", default=".env", type=Path, help="Destination for env-file")
+@click.option("-t", "--template", default="env-template.yml", type=Path, help="Template for environment variables")
 @click.option(
     "-z", "--zero-input", is_flag=True, help="Skip prompts and use presets verbatim. Useful for CI environments."
 )
 @click.version_option(poetry_version.extract(source_file=__file__))
-def barbara_develop(skip_existing, destination, template, zero_input):
+def barbara_develop(skip_existing, output, template, zero_input):
     """Development mode which prompts for user input"""
     if zero_input:
-        destination = ".env"
         destination_handler = create_target_file
         merge_strategy = merge_with_presets
     else:
         destination_handler = confirm_target_file
         merge_strategy = merge_with_prompts
 
-    confirmed_target = destination if os.path.exists(destination) else destination_handler(destination)
+    confirmed_target = Path(output if output.exists() else destination_handler(output))
 
     click.echo(f"Creating environment: {confirmed_target}")
 
-    TemplateReader = readers.get_reader(template)
-    environment_template = TemplateReader(template).read()
+    template_reader_class = readers.get_reader(template)
+    environment_template = template_reader_class(template).read()
     existing_environment = readers.EnvReader(confirmed_target).read()
     click.echo(f"Skip Existing: {skip_existing}")
 

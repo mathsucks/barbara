@@ -1,6 +1,7 @@
 import os
 import sys
-from collections import OrderedDict
+from pathlib import Path
+from typing import Dict
 
 import click
 from dotenv import find_dotenv
@@ -13,7 +14,7 @@ DEFAULT_ENV_FILENAME = ".env"
 EMPTY = object()
 
 
-def confirm_target_file(target_file: str = None) -> bool:
+def confirm_target_file(target_file: Path = None) -> bool:
     """Determines which target file to use.
 
     Strategy progresses as follows:
@@ -22,10 +23,10 @@ def confirm_target_file(target_file: str = None) -> bool:
         - Offer to create one
         - Quit
     """
-    target_file = target_file or find_dotenv() or DEFAULT_ENV_FILENAME
+    target_file = Path(target_file or find_dotenv() or DEFAULT_ENV_FILENAME)
 
-    if os.path.exists(target_file):
-        return click.prompt("Destination file", default=target_file)
+    if target_file.exists():
+        return click.prompt("Destination file", default=target_file.relative_to(os.getcwd()))
     elif click.confirm(f"{target_file} does not exist. Create it?"):
         return create_target_file(target_file)
     else:
@@ -33,9 +34,9 @@ def confirm_target_file(target_file: str = None) -> bool:
         sys.exit(1)
 
 
-def create_target_file(target_file: str = None) -> bool:
+def create_target_file(target_file: Path = None) -> bool:
     """Creates an empty file at the target."""
-    click.open_file(target_file, "w").close()
+    target_file.touch()
     return target_file
 
 
@@ -53,7 +54,7 @@ def prompt_user_for_value(env_variable) -> str:
         return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
-def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
+def merge_with_presets(existing: Dict, template: Dict, skip_existing: bool) -> Dict:
     """Merge two ordered dicts and uses the presets for values along the way
 
     If skipping existing keys, only newly discovered keys will be added. Once a key exists, the existing
@@ -77,10 +78,10 @@ def merge_with_presets(existing: OrderedDict, template: OrderedDict, skip_existi
         else:
             merged[key] = existing_value.template.format(**{k: v for k, v in existing_value.subvariables})
 
-    return OrderedDict(sorted(merged.items()))
+    return dict(sorted(merged.items()))
 
 
-def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existing: bool) -> OrderedDict:
+def merge_with_prompts(existing: Dict, template: Dict, skip_existing: bool) -> Dict:
     """Merge two ordered dicts and prompts the user for values along the way
 
     If skipping existing keys, only newly discovered keys will be prompted for. Once a key exists, the existing
@@ -97,4 +98,4 @@ def merge_with_prompts(existing: OrderedDict, template: OrderedDict, skip_existi
         preset = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
         merged[key] = prompt_user_for_value(preset)
 
-    return OrderedDict(sorted(merged.items()))
+    return dict(sorted(merged.items()))

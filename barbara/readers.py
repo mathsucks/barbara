@@ -1,7 +1,7 @@
 import re
-from collections import OrderedDict
 from fnmatch import fnmatch
 from functools import partial
+from pathlib import Path
 from typing import Dict, TextIO, Type, Union
 
 import yaml
@@ -19,7 +19,7 @@ class BaseTemplateReader:
         TEMPLATE_READERS.append(cls)
 
 
-def get_reader(file_or_name: Union[str, TextIO]) -> Type:
+def get_reader(file_or_name: Path) -> Type:
     """Guess which reader to return using naive file-type check"""
     filename = getattr(file_or_name, "name", file_or_name)
     filename_matcher = partial(fnmatch, filename)
@@ -53,13 +53,17 @@ class YAMLTemplateReader(BaseTemplateReader):
     def __init__(self, source: TextIO) -> None:
         self.source = source
 
-    def _read(self) -> OrderedDict:
+    def _read(self) -> Dict:
         """Check configuration file for acceptable versions."""
-        source = yaml.safe_load(self.source.read())
-        if re.match(self.SCHEMA_VERSION_MATCH, str(source.get("schema-version", "NONE"))):
-            return source
-        else:
-            raise FileError(f"Version mismatch. Required 2, found: {source['schema-version']}")
+        source = yaml.safe_load(Path(self.source).read_text())
+        assert source, self.source
+        try:
+            if re.match(self.SCHEMA_VERSION_MATCH, str(source["schema-version"])):
+                return source
+            else:
+                raise TypeError
+        except TypeError:
+            raise TypeError(f"Version mismatch. Required 2, found: {source.get('schema-version')}")
 
     def read(self) -> Dict[str, str]:
         template = self._read()
