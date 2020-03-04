@@ -126,7 +126,7 @@ class TestEnvVariableMerges:
 class TestAutoVariableMerges:
     def test_merge_with_presets_matching_with_skip(self, auto_var_template, patched_subprocess_output):
         """Should merge two ordered dictionaries with matching keys and use existing and presets for any keys"""
-        existing = {"A": "existing-value-a", "B": "existing-value-b"}
+        existing = {"A": "existing-value-a", "B": "existing-value-b", "D": "original-hash"}
         merged = utils.merge_with_presets(existing, auto_var_template, skip_existing=True)
         assert merged["A"] == "existing-value-a"
         assert merged["B"] == "existing-value-b"

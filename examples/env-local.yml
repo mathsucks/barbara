@@ -13,3 +13,5 @@ environment:
   DEBUG: 1
   TEMPLATES: ../templates
   HOST_TYPE: local
+  GIT_COMMIT_SHORT: "@@GIT_COMMIT:7@@"
+  GIT_COMMIT_FULL: "@@GIT_COMMIT:40@@"

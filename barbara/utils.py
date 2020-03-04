@@ -44,9 +44,9 @@ def merge_keys(
     """Merge existing values with template values."""
     template_keys = set(k.upper() for k in template.keys())
     existing_keys = set(k.upper() for k in existing.keys())
-    auto_var_keys = set(k.upper() for k, v in template.items() if isinstance(v, AutoVariable))
+    auto_var_keys = set(k.upper() for k in template.keys() if isinstance(template.get(k), AutoVariable))
 
-    merged_keys = template_keys ^ existing_keys if skip_existing else template_keys
+    merged_keys = template_keys - existing_keys if skip_existing else template_keys
 
     # Always append AutoVariable keys for regeneration
     merged_keys |= auto_var_keys
@@ -65,10 +65,10 @@ def merge_with_presets(
     merged = existing.copy()
 
     for key in merge_keys(existing, template, skip_existing):
-        if existing.get(key, EMPTY) is not EMPTY:
-            merged[key] = existing.get(key)
-        elif isinstance(template.get(key), AutoVariable):
+        if isinstance(template.get(key), AutoVariable):
             merged[key] = template[key].generate()
+        elif existing.get(key, EMPTY) is not EMPTY:
+            merged[key] = existing.get(key)
         elif isinstance(template.get(key), EnvVariable):
             merged[key] = template[key].preset
         else:
@@ -88,10 +88,10 @@ def merge_with_prompts(
     merged = existing.copy()
 
     for key in merge_keys(existing, template, skip_existing):
-        variable = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
-        if isinstance(variable, AutoVariable):
-            merged[key] = variable.generate()
+        if isinstance(template.get(key), AutoVariable):
+            merged[key] = template[key].generate()
         else:
+            variable = EnvVariable(key, existing.get(key)) if key in existing else template.get(key)
             merged[key] = prompt_user_for_value(variable)
 
     return dict(sorted(merged.items()))

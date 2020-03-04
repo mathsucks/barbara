@@ -44,6 +44,9 @@ class GitCommitVariable(AutoVariable):
     def __eq__(self, other):
         return all((self.name == other.name, self.length == other.length))
 
+    def __repr__(self):
+        return f"GitCommitVariable(name='{self.name}', length={self.length})"
+
     def validate(self):
         """Length must be an integer and request less than or equal to 40 characters."""
         assert isinstance(self.length, int) and self.length <= 40
@@ -51,7 +54,7 @@ class GitCommitVariable(AutoVariable):
     def generate(self):
         """Generate Git commit hash of requested length."""
         try:
-            git_revision = subprocess.check_output(["git", "rev-parse", "HEAD"])
+            git_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], encoding="utf-8")
             hash_size = slice(0, self.length)
             return git_revision[hash_size]
         except subprocess.CalledProcessError:
