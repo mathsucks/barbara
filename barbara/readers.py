@@ -49,12 +49,12 @@ class YAMLTemplateReader(BaseTemplateReader):
 
     SCHEMA_VERSION_MATCH = r"^2(.0)*$"
 
-    def __init__(self, source: TextIO) -> None:
+    def __init__(self, source: Path) -> None:
         self.source = source
 
     def _read(self) -> Dict:
         """Check configuration file for acceptable versions."""
-        source = yaml.safe_load(Path(self.source).read_text())
+        source = yaml.safe_load(self.source.read_text())
         assert source, self.source
         try:
             if re.match(self.SCHEMA_VERSION_MATCH, str(source["schema-version"])):
@@ -68,7 +68,7 @@ class YAMLTemplateReader(BaseTemplateReader):
         template = self._read()
         for key, value in template["environment"].items():
             for var_type, var_pattern in AUTO_VARIABLE_MATCHERS.items():
-                match = var_pattern.search(value)
+                match = var_pattern.search(str(value))
                 if match:
                     template["environment"][key] = var_type(key, match.group("parameter"))
                     break
