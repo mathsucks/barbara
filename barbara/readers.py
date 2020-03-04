@@ -8,13 +8,9 @@ import yaml
 from click import FileError
 from dotenv.main import DotEnv
 
-from .variables import EnvVariable, GitCommitVariable
+from .variables import AUTO_VARIABLE_MATCHERS, EnvVariable
 
 TEMPLATE_READERS = []
-
-SPECIAL_VARIABLE_MATCHERS = {
-    GitCommitVariable: re.compile(r"^@@GIT_COMMIT:(?P<parameter>[0-9]{1,2})@@$"),
-}
 
 
 class BaseTemplateReader:
@@ -71,7 +67,7 @@ class YAMLTemplateReader(BaseTemplateReader):
     def read(self) -> Dict[str, str]:
         template = self._read()
         for key, value in template["environment"].items():
-            for var_type, var_pattern in SPECIAL_VARIABLE_MATCHERS.items():
+            for var_type, var_pattern in AUTO_VARIABLE_MATCHERS.items():
                 match = var_pattern.search(value)
                 if match:
                     template["environment"][key] = var_type(key, match.group("parameter"))

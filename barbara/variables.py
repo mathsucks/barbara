@@ -1,13 +1,27 @@
 import abc
+import re
 import subprocess
 from collections import namedtuple
+from typing.re import Pattern
 
-#: Regular environment variable with a preset value
+#: Basic environment variable with a preset value
 EnvVariable = namedtuple("EnvVariable", ("name", "preset"))
+
+AUTO_VARIABLE_MATCHERS = {}
 
 
 class AutoVariable(metaclass=abc.ABCMeta):
     """AutoVariables do not require user input and are always updated when generating a new env-file."""
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        AUTO_VARIABLE_MATCHERS[cls] = cls.MATCHER
+
+    @property
+    @abc.abstractmethod
+    def MATCHER(self) -> Pattern:
+        """Compiled regular expression which matches this AutoVariable in the template."""
+        return NotImplemented
 
     def validate(self) -> bool:
         """Validate template parameters, if necessary."""
@@ -20,6 +34,8 @@ class AutoVariable(metaclass=abc.ABCMeta):
 
 class GitCommitVariable(AutoVariable):
     """Replaced with git commit hash when generating an env-file."""
+
+    MATCHER = re.compile(r"^@@GIT_COMMIT:(?P<parameter>[0-9]{1,2})@@$")
 
     def __init__(self, name: str, length: int):
         self.name = name
