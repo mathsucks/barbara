@@ -33,7 +33,7 @@ def create_target_file(target_file: Path = None) -> bool:
     return target_file
 
 
-def prompt_user_for_value(env_variable) -> str:
+def prompt_user_for_value(env_variable: EnvVariable) -> str:
     """Prompts the user for a value for an EnvVariable."""
     return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
@@ -60,7 +60,7 @@ def merge_with_presets(existing: Dict, template: Dict, skip_existing: bool) -> D
         if isinstance(existing_value, EnvVariable):
             merged[key] = existing_value.preset
         else:
-            merged[key] = existing_value.template.format(**{k: v for k, v in existing_value.subvariables})
+            merged[key] = existing_value
 
     return dict(sorted(merged.items()))
 
