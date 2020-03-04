@@ -6,11 +6,15 @@ from typing import Dict, TextIO, Type, Union
 
 import yaml
 from click import FileError
-from dotenv import dotenv_values
+from dotenv.main import DotEnv
 
-from .variables import EnvVariable
+from .variables import EnvVariable, GitCommitVariable
 
 TEMPLATE_READERS = []
+
+SPECIAL_VARIABLE_MATCHERS = {
+    GitCommitVariable: re.compile(r"^@@GIT_COMMIT:(?P<parameter>[0-9]{1,2})@@$"),
+}
 
 
 class BaseTemplateReader:
@@ -41,8 +45,7 @@ class EnvReader:
         self.source = source
 
     def read(self) -> Dict[str, str]:
-        filename = getattr(self.source, "name", self.source)
-        return dotenv_values(filename)
+        return DotEnv(self.source, interpolate=False).dict()
 
 
 class YAMLTemplateReader(BaseTemplateReader):
@@ -67,6 +70,12 @@ class YAMLTemplateReader(BaseTemplateReader):
 
     def read(self) -> Dict[str, str]:
         template = self._read()
-        for key, preset in template["environment"].items():
-            template["environment"][key] = EnvVariable(key, preset)
+        for key, value in template["environment"].items():
+            for var_type, var_pattern in SPECIAL_VARIABLE_MATCHERS.items():
+                match = var_pattern.search(value)
+                if match:
+                    template["environment"][key] = var_type(key, match.group("parameter"))
+                    break
+            else:
+                template["environment"][key] = EnvVariable(key, value)
         return template
