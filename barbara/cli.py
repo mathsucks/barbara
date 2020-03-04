@@ -1,4 +1,3 @@
-import os
 from pathlib import Path
 
 import click
@@ -44,23 +43,5 @@ def barbara_develop(skip_existing, output, template, zero_input):
     environment = merge_strategy(existing_environment, environment_template["environment"], skip_existing)
 
     Writer(confirmed_target, environment).write()
-
-    click.echo("Environment ready!")
-
-
-@click.command()
-@click.option(
-    "-t", "--template", default="env-template.yml", type=click.File(), help="Template for environment variables"
-)
-@click.option("-o", "--output", default=".env", type=str, help="Destination for env-file")
-@click.version_option(poetry_version.extract(source_file=__file__))
-def barbara_deploy(output, template):
-    """Deploy mode which retrieves values from AWS SSM"""
-    confirmed_target = output if os.path.exists(output) else create_target_file(output)
-
-    click.echo(f"Creating env-file: {confirmed_target}")
-
-    config_reader = readers.YAMLTemplateReader(template)
-    Writer(confirmed_target, config_reader.read()).write()
 
     click.echo("Environment ready!")

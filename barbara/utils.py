@@ -4,12 +4,8 @@ from pathlib import Path
 from typing import Dict
 
 import click
-from dotenv import find_dotenv
 
 from .variables import EnvVariable
-
-#: Default name to use for new files when none are discovered or given
-DEFAULT_ENV_FILENAME = ".env"
 
 EMPTY = object()
 
@@ -19,19 +15,16 @@ def confirm_target_file(target_file: Path = None) -> bool:
 
     Strategy progresses as follows:
         - Confirm the provided value
-        - Search for one automatically, then confirm
         - Offer to create one
         - Quit
     """
-    target_file = Path(target_file or find_dotenv() or DEFAULT_ENV_FILENAME)
-
     if target_file.exists():
         return click.prompt("Destination file", default=target_file.relative_to(os.getcwd()))
-    elif click.confirm(f"{target_file} does not exist. Create it?"):
+    if click.confirm(f"{target_file} does not exist. Create it?"):
         return create_target_file(target_file)
-    else:
-        click.echo("Cannot continue without target file", color="R")
-        sys.exit(1)
+
+    click.echo("Cannot continue without target file", color="R")
+    sys.exit(1)
 
 
 def create_target_file(target_file: Path = None) -> bool:
@@ -41,17 +34,8 @@ def create_target_file(target_file: Path = None) -> bool:
 
 
 def prompt_user_for_value(env_variable) -> str:
-    """Prompts the user for a value for an EnvVariable or EnvVariableTemplate.
-
-    If the variable contains subvariables, the user is prompted for each subvariable before the result is returned as
-    a formatted string.
-    """
-    try:
-        click.echo(f"{env_variable.name} ({env_variable.template}):")
-        context = {prompt.name: prompt_user_for_value(prompt) for prompt in env_variable.subvariables}
-        return env_variable.template.format(**context)
-    except AttributeError:
-        return click.prompt(env_variable.name, default=env_variable.preset, type=str)
+    """Prompts the user for a value for an EnvVariable."""
+    return click.prompt(env_variable.name, default=env_variable.preset, type=str)
 
 
 def merge_with_presets(existing: Dict, template: Dict, skip_existing: bool) -> Dict:
