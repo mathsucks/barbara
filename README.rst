@@ -53,12 +53,7 @@ YAML Format (.env.yml)
    env-file does not exist. Create it? [y/N]: y
    Creating environment: env-file
    Skip Existing: True
-   DATABASE_URL:
-   user [root]:
-   password [root]: wordpass
-   host [127.0.0.1]:
-   port [5432]:
-   db_name [sample]:
+   DATABASE_URL [postgres://root@db:5432/mydb]: root:wordpass@127.0.0.1:5432/sample
    ENVIRONMENT_NAME [development]:
    Environment ready!
 
