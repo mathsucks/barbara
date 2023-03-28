@@ -1,6 +1,7 @@
 from unittest import mock
 
 import pytest
+
 from barbara import utils
 from barbara.variables import EnvVariable, GitCommitVariable
 
