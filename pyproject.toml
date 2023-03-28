@@ -1,53 +1,10 @@
-[tool.poetry]
-name = "barbara"
-version = "2.3.0"
-description = "Environment variable management"
-authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
-license = "GPL-3.0"
-readme = "README.rst"
-classifiers = [
-    "Development Status :: 5 - Production/Stable",
-    "Environment :: Console",
-    "Intended Audience :: Developers",
-    "Intended Audience :: System Administrators",
-    "Operating System :: MacOS",
-    "Operating System :: POSIX :: Linux",
-    "Operating System :: Unix",
-    "Topic :: Software Development",
-    "Topic :: System",
-    "Topic :: Terminals",
-]
-packages = [
-    { include = "barbara" },
-]
-
-[tool.poetry.dependencies]
-python = "==3.*,>=3.7.0"
-click = "==7.*,>=7.0.0"
-poetry-version = "==0.*,>=0.1.3"
-python-dotenv = "==0.*,>=0.10.1"
-pyyaml = "==5.*,>=5.1.0"
-
-[tool.poetry.dev-dependencies]
-pre-commit = "==2.*"
-pytest = "==5.*"
-pytest-cov = "==2.*"
-
-[tool.poetry.scripts]
-barb = "barbara.cli:barbara_develop"
-
-[tool.isort]
-force_grid_wrap = 0
-include_trailing_comma = true
-line_length = 120
-multi_line_output = 3
-skip = "setup.py"
-use_parentheses = true
-verbose = true
+[build-system]
+requires = ["poetry>=1.4.1"]
+build-backend = "poetry.masonry.api"
 
 [tool.black]
 line-length = 120
-target-version = ['py36', 'py37', 'py38']
+target-version = ['py38', 'py39', 'py310', 'py311']
 exclude = '''
 /(
     \.eggs
@@ -64,7 +21,49 @@ exclude = '''
 )/
 '''
 
+[tool.isort]
+force_grid_wrap = 0
+include_trailing_comma = true
+line_length = 120
+multi_line_output = 3
+skip = "setup.py"
+use_parentheses = true
+verbose = true
 
-[build-system]
-requires = ["poetry>=0.12.16"]
-build-backend = "poetry.masonry.api"
+[tool.poetry]
+name = "barbara"
+version = "2.3.0"
+description = "Environment variable management"
+authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
+license = "GPL-3.0"
+readme = "README.rst"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "Operating System :: MacOS",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: Unix",
+  "Topic :: Software Development",
+  "Topic :: System",
+  "Topic :: Terminals"
+]
+packages = [
+  {include = "barbara"}
+]
+
+[tool.poetry.dependencies]
+python = "==3.*,>=3.7.0"
+click = "==7.*,>=7.0.0"
+poetry-version = "==0.*,>=0.1.3"
+python-dotenv = "==0.*,>=0.10.1"
+pyyaml = "==5.*,>=5.1.0"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "==2.*"
+pytest = "==5.*"
+pytest-cov = "==2.*"
+
+[tool.poetry.scripts]
+barb = "barbara.cli:barbara_develop"
