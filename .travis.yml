@@ -2,9 +2,11 @@ dist: xenial
 language: python
 sudo: false
 python:
-  - "3.7"
-  - "3.8-dev"  # 3.8 development branch
-  - "nightly"  # nightly build
+  - "3.8"
+  - "3.9"
+  - "3.10"
+  - "3.11"
+  - "3.12"
 install:
   - "pip install poetry==0.12.16 pip==19.1.1"
   - "poetry install"
