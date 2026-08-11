@@ -3,6 +3,16 @@ name: "Publish Image to GHCR"
 "on":
   release:
     types: [published]
+  # Builds an image for a tag that was released before this workflow
+  # existed. Dispatch this from the default branch and name the tag
+  # explicitly: dispatching against the tag itself does not work,
+  # because the tag does not contain this file.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to build and push, e.g. v2.4.0"
+        required: true
+        type: string
   # Build without pushing on pull requests, so a broken Dockerfile is
   # caught in review rather than at release time.
   pull_request:
@@ -23,12 +33,40 @@ jobs:
       # GITHUB_TOKEN, so no registry credentials are stored.
       packages: write
     steps:
+      # Left empty on pull requests, where there is no version to tag
+      # and nothing is pushed.
+      - name: Resolve the version being built
+        id: version
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_TAG: ${{ inputs.tag }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          case "$EVENT_NAME" in
+            workflow_dispatch)
+              # Anchored, so a tag cannot smuggle anything past the
+              # version it claims to be before reaching `ref:`.
+              if printf '%s' "$INPUT_TAG" | grep -qE '^v[0-9]+\.[0-9]+\.[0-9]+$'; then
+                tag="$INPUT_TAG"
+              else
+                echo "Refusing '${INPUT_TAG}': expected vMAJOR.MINOR.PATCH" >&2
+                exit 1
+              fi
+              ;;
+            release) tag="$REF_NAME" ;;
+            *) tag="" ;;
+          esac
+          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v4
+        with:
+          # Empty checks out the ref that triggered the run.
+          ref: ${{ steps.version.outputs.tag }}
 
       - uses: docker/setup-buildx-action@v3
 
       - name: Log in to GHCR
-        if: github.event_name == 'release'
+        if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
@@ -41,15 +79,15 @@ jobs:
         with:
           images: ghcr.io/${{ github.repository }}
           tags: |
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            type=semver,pattern={{version}},value=${{ steps.version.outputs.tag }}
+            type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.tag }}
+            type=semver,pattern={{major}},value=${{ steps.version.outputs.tag }}
             type=ref,event=pr
 
       - uses: docker/build-push-action@v6
         with:
           context: .
-          push: ${{ github.event_name == 'release' }}
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
