@@ -56,5 +56,6 @@ class GitCommitVariable(AutoVariable):
             git_revision = subprocess.check_output(["git", "rev-parse", "HEAD"], encoding="utf-8")
             hash_size = slice(0, self.length)
             return git_revision[hash_size]
-        except subprocess.CalledProcessError:
+        except (subprocess.CalledProcessError, OSError):
+            # Not a repository, or git is not installed at all.
             return "UNKNOWN"
