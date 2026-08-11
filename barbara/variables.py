@@ -2,7 +2,6 @@ import abc
 import re
 import subprocess
 from collections import namedtuple
-from typing.re import Pattern
 
 #: Basic environment variable with a preset value
 EnvVariable = namedtuple("EnvVariable", ("name", "preset"))
@@ -19,7 +18,7 @@ class AutoVariable(metaclass=abc.ABCMeta):
 
     @property
     @abc.abstractmethod
-    def MATCHER(self) -> Pattern:
+    def MATCHER(self) -> re.Pattern:
         """Compiled regular expression which matches this AutoVariable in the template."""
         return NotImplemented
 

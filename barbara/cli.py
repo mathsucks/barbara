@@ -1,11 +1,16 @@
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
 import click
-import poetry_version
 
 from . import readers
 from .utils import confirm_target_file, create_target_file, merge_with_presets, merge_with_prompts
 from .writers import Writer
+
+try:
+    __version__ = version("barbara")
+except PackageNotFoundError:  # running from a source checkout
+    __version__ = "unknown"
 
 
 @click.command()
@@ -21,7 +26,7 @@ from .writers import Writer
 @click.option(
     "-z", "--zero-input", is_flag=True, help="Skip prompts and use presets verbatim. Useful for CI environments."
 )
-@click.version_option(poetry_version.extract(source_file=__file__))
+@click.version_option(__version__)
 def barbara_develop(skip_existing, output, template, zero_input):
     """Development mode which prompts for user input"""
     if zero_input:
