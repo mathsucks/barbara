@@ -32,7 +32,7 @@ verbose = true
 
 [tool.poetry]
 name = "barbara"
-version = "2.3.0"
+version = "2.4.0"
 description = "Environment variable management"
 authors = ["Matthew de Verteuil <onceuponajooks@gmail.com>"]
 license = "GPL-3.0"
