@@ -104,3 +104,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# uv (this project locks with poetry)
+uv.lock
